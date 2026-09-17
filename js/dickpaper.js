@@ -20,6 +20,7 @@
   var pctEl = document.getElementById('paper-progress-text');
   var statusEl = document.getElementById('paper-status');
   var zoomEl = document.getElementById('zoom-value');
+  var zoomCta = document.getElementById('paper-zoom-cta');
 
   if (!viewer || !image) return;
 
@@ -28,6 +29,13 @@
   var ty = 0;
   var actualScale = 1;
   var loaded = false;
+  var ctaDismissed = false;
+
+  function dismissZoomCta() {
+    if (ctaDismissed) return;
+    ctaDismissed = true;
+    if (zoomCta) zoomCta.classList.add('is-hidden');
+  }
 
   function t(key, fallback) {
     return typeof window.dhdT === 'function' ? window.dhdT(key) : fallback;
@@ -122,6 +130,7 @@
     actualScale = image.naturalWidth ? image.naturalWidth / Math.min(viewer.clientWidth, viewer.clientHeight) : 1;
     applyTransform();
     status(sizeLabel || t('paper-loaded', 'Artwork loaded.'));
+    if (zoomCta && !ctaDismissed) zoomCta.classList.remove('is-hidden');
     upgradeToFull();
   }
 
@@ -221,6 +230,7 @@
   viewer.addEventListener('wheel', function (event) {
     if (!loaded) return;
     event.preventDefault();
+    dismissZoomCta();
     var rect = viewer.getBoundingClientRect();
     var anchorX = event.clientX - rect.left;
     var anchorY = event.clientY - rect.top;
@@ -246,6 +256,7 @@
 
   viewer.addEventListener('pointerdown', function (event) {
     if (!loaded) return;
+    dismissZoomCta();
     try { viewer.setPointerCapture(event.pointerId); } catch (e) { /* synthetic/invalid pointer */ }
     pointers[event.pointerId] = { x: event.clientX, y: event.clientY };
     lastX = event.clientX;
@@ -299,6 +310,7 @@
   // --- Double click: toggle actual size / fit ---
   viewer.addEventListener('dblclick', function () {
     if (!loaded) return;
+    dismissZoomCta();
     if (Math.abs(scale - actualScale) < 0.05) reset();
     else zoomToActual();
   });
@@ -306,7 +318,10 @@
   // --- Toolbar ---
   function bind(id, handler) {
     var el = document.getElementById(id);
-    if (el) el.addEventListener('click', handler);
+    if (el) el.addEventListener('click', function () {
+      dismissZoomCta();
+      handler();
+    });
   }
 
   bind('zoom-in', function () { setScale(scale * STEP); });
@@ -322,13 +337,16 @@
     switch (event.key) {
       case '+':
       case '=':
+        dismissZoomCta();
         setScale(scale * STEP);
         break;
       case '-':
       case '_':
+        dismissZoomCta();
         setScale(scale / STEP);
         break;
       case '0':
+        dismissZoomCta();
         reset();
         break;
       case 'ArrowUp':
@@ -348,6 +366,15 @@
     }
     event.preventDefault();
   });
+
+  // --- ZOOM IT call to action: one generous first zoom, then it goes away ---
+  if (zoomCta) {
+    zoomCta.addEventListener('click', function () {
+      if (!loaded) return;
+      dismissZoomCta();
+      setScale(Math.max(scale * 2.6, STEP * STEP));
+    });
+  }
 
   window.addEventListener('resize', function () {
     if (loaded) actualScale = image.naturalWidth / Math.max(1, Math.min(viewer.clientWidth, viewer.clientHeight));
