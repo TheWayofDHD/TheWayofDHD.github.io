@@ -7,6 +7,7 @@
   'use strict';
 
   var IMAGE_URL = 'assets/dickpaper.jpg';
+  var FULL_URL = 'assets/dickpaper.png';
   var MIN_SCALE = 0.5;
   var MAX_SCALE = 8;
   var STEP = 1.25;
@@ -103,6 +104,51 @@
     actualScale = image.naturalWidth ? image.naturalWidth / Math.min(viewer.clientWidth, viewer.clientHeight) : 1;
     applyTransform();
     status(sizeLabel || t('paper-loaded', 'Artwork loaded.'));
+    upgradeToFull();
+  }
+
+  // --- Full-resolution upgrade: 8000x8000 PNG behind the fast JPEG layer ---
+  var upgraded = false;
+
+  function upgradeToFull() {
+    if (upgraded) return;
+    upgraded = true;
+    var progressKey = ' \u00b7 ' + t('paper-upgrading', 'upgrading to full resolution');
+
+    function applyFull(blob) {
+      var url = URL.createObjectURL(blob);
+      var next = new Image();
+      next.onload = function () {
+        // Detach the JPEG-layer handlers: they would re-run on src change and
+        // overwrite the status with the old blob size.
+        image.onload = null;
+        image.onerror = null;
+        image.src = url;
+        actualScale = image.naturalWidth / Math.max(1, Math.min(viewer.clientWidth, viewer.clientHeight));
+        clampPan();
+        applyTransform();
+        var mb = (blob.size / (1024 * 1024)).toFixed(1);
+        status(t('paper-loaded-detail', 'Loaded') + ' ' + image.naturalWidth + '\u00d7' + image.naturalHeight +
+          ' \u00b7 ' + mb + ' MB \u00b7 ' + t('paper-full', 'full resolution'));
+        setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
+      };
+      next.onerror = function () { URL.revokeObjectURL(url); };
+      next.src = url;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', FULL_URL, true);
+    xhr.responseType = 'blob';
+    xhr.onprogress = function (event) {
+      if (event.lengthComputable) {
+        status(t('paper-loaded-detail', 'Loaded') + ' 1280\u00d71280' + progressKey +
+          ' ' + Math.round((event.loaded / event.total) * 100) + '%');
+      }
+    };
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300 && xhr.response) applyFull(xhr.response);
+    };
+    xhr.send();
   }
 
   function showImageFromBlob(blob) {
@@ -165,6 +211,11 @@
   }, { passive: false });
 
   // --- Drag / pan + pinch ---
+  // The <img> element must not start a native browser drag: it cancels
+  // pointer events and mouse panning dies right after pointerdown.
+  image.draggable = false;
+  viewer.addEventListener('dragstart', function (event) { event.preventDefault(); });
+
   var pointers = {};
   var lastX = 0;
   var lastY = 0;
@@ -177,7 +228,7 @@
 
   viewer.addEventListener('pointerdown', function (event) {
     if (!loaded) return;
-    viewer.setPointerCapture(event.pointerId);
+    try { viewer.setPointerCapture(event.pointerId); } catch (e) { /* synthetic/invalid pointer */ }
     pointers[event.pointerId] = { x: event.clientX, y: event.clientY };
     lastX = event.clientX;
     lastY = event.clientY;

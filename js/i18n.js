@@ -751,10 +751,91 @@
     }
   };
 
+  var v2Layer4 = {
+    en: {
+      'nav-advent': 'Advent',
+      'links-advent-title': 'DHD Advent bot',
+      'links-advent-text': 'A fresh postcard every day',
+      'exq-tag': 'Exclusive · 2.05%',
+      'exq-title': 'Exclusive 21 — the rare names of the collection',
+      'exq-lead': 'Only 21 of the 1022 pieces carry the Exclusive type — 2.05% of the supply. Each one has a name of its own. Drag the strip with your mouse or use the arrows; every card opens on Getgems.',
+      'exq-note': 'All 21 Exclusive items, straight from the on-chain type trait.',
+      'exq-note-link': 'Open the Exclusive filter',
+      'exq-fallback-a': 'Exclusive 21 — see the full',
+      'exq-fallback-b': 'collection',
+      'rlt-tag': 'Interactive',
+      'rlt-title': 'ХЧК roulette — test your luck',
+      'rlt-lead': 'The odds are not invented: they are the real shares of the three on-chain types. 97.85% of spins land on Epic, 2.05% on Exclusive, and 0.10% — the rarest outcome — on the Diamond Dickpaper.',
+      'rlt-spin': 'Spin the roulette',
+      'rlt-note': 'An entertainment demo: spins do not mint anything and do not affect the blockchain. The weights replicate the real supply: 1000 / 21 / 1.',
+      'rlt-stats': 'Spins',
+      'rlt-hit-epic': 'Epic',
+      'rlt-hit-exclusive': 'Rare hit: Exclusive',
+      'rlt-hit-diamond': 'Jackpot: Diamond — the Dickpaper itself!',
+      'paper-upgrading': 'upgrading to full resolution',
+      'paper-full': 'full resolution',
+      'paper-hint': 'Mouse wheel or +/− to zoom, drag the image to pan, pinch with two fingers on touch screens. Full detail is 8000×8000 — use 1:1.',
+      'advent-title': 'DHD Advent — a postcard a day',
+      'advent-lead': 'The DHD Advent Telegram bot sends every subscriber one postcard every day: 1000 unique cards written in the voice of the collection. Free, no wallet needed — just open the bot.',
+      'advent-step1-title': 'Open the bot',
+      'advent-step1-text': 'Tap the button below — it opens @DHDAdventbot in Telegram. Press Start.',
+      'advent-step2-title': "Get today's card",
+      'advent-step2-text': 'The bot sends a fresh postcard every day — a holiday greeting or a message from DHD himself.',
+      'advent-step3-title': 'Collect the set',
+      'advent-step3-text': '1000 unique cards exist. Come back daily and collect the full Way of DHD set.',
+      'advent-cta': "Get today's postcard in Telegram",
+      'advent-cta-note': '@DHDAdventbot — free, works on phone and desktop Telegram.',
+      'advent-fact-cards': 'Unique cards',
+      'advent-fact-cadence': 'One postcard per day',
+      'advent-fact-price': 'Free to join',
+      'advent-more-tag': 'More of the project',
+      'advent-more-title': 'Keep exploring the Way of DHD'
+    },
+    ru: {
+      'nav-advent': 'Адвент',
+      'links-advent-title': 'Бот DHD Advent',
+      'links-advent-text': 'Новая открытка каждый день',
+      'exq-tag': 'Exclusive · 2,05%',
+      'exq-title': 'Exclusive 21 — редкие имена коллекции',
+      'exq-lead': 'Только 21 предмет из 1022 имеет тип Exclusive — 2,05% выпуска, и у каждого есть своё имя. Тяните ленту мышью или листайте стрелками; каждая карточка открывается на Getgems.',
+      'exq-note': 'Все 21 Exclusive-предметы — напрямую из on-chain трейта Type.',
+      'exq-note-link': 'Открыть фильтр Exclusive',
+      'exq-fallback-a': 'Exclusive 21 — смотрите',
+      'exq-fallback-b': 'коллекцию',
+      'rlt-tag': 'Интерактив',
+      'rlt-title': 'ХЧК-рулетка — проверьте свою удачу',
+      'rlt-lead': 'Шансы не выдуманы: это реальные доли трёх on-chain типов. 97,85% вращений выпадает на Epic, 2,05% — на Exclusive, и 0,10% — самый редкий исход — на Diamond Dickpaper.',
+      'rlt-spin': 'Крутить рулетку',
+      'rlt-note': 'Развлекательная демонстрация: вращения ничего не минтят и не влияют на блокчейн. Весы повторяют реальный выпуск: 1000 / 21 / 1.',
+      'rlt-stats': 'Вращений',
+      'rlt-hit-epic': 'Epic',
+      'rlt-hit-exclusive': 'Редкий улов: Exclusive',
+      'rlt-hit-diamond': 'Джекпот: Diamond — сам Dickpaper!',
+      'paper-upgrading': 'загружаем полное разрешение',
+      'paper-full': 'полное разрешение',
+      'paper-hint': 'Колесо мыши или +/− для масштаба, перетаскивание для сдвига, два пальца на сенсорном экране. Полная детализация — 8000×8000, смотрите в режиме 1:1.',
+      'advent-title': 'DHD Advent — открытка каждый день',
+      'advent-lead': 'Телеграм-бот DHD Advent присылает каждому подписчику по одной открытке в день: 1000 уникальных карточек голосом коллекции. Бесплатно и без кошелька — просто откройте бота.',
+      'advent-step1-title': 'Откройте бота',
+      'advent-step1-text': 'Нажмите кнопку ниже — откроется @DHDAdventbot в Telegram. Нажмите Start.',
+      'advent-step2-title': 'Получите сегодняшнюю карточку',
+      'advent-step2-text': 'Бот присылает свежую открытку каждый день — поздравление с праздником или послание от самого DHD.',
+      'advent-step3-title': 'Соберите коллекцию',
+      'advent-step3-text': 'Всего существует 1000 уникальных карточек. Заходите каждый день и соберите весь Путь ХЧК.',
+      'advent-cta': 'Получить сегодняшнюю открытку в Telegram',
+      'advent-cta-note': '@DHDAdventbot — бесплатно, работает на телефоне и в десктопном Telegram.',
+      'advent-fact-cards': 'Уникальных карточек',
+      'advent-fact-cadence': 'По одной открытке в день',
+      'advent-fact-price': 'Бесплатно',
+      'advent-more-tag': 'Ещё о проекте',
+      'advent-more-title': 'Продолжите Путь ХЧК'
+    }
+  };
+
   var defaultLang = 'en';
 
   // Merge the v2 layers on top of the base dictionaries.
-  [v2Layer1, v2Layer2, v2Layer2b, v2Layer3, v2Layer3b].forEach(function (layer) {
+  [v2Layer1, v2Layer2, v2Layer2b, v2Layer3, v2Layer3b, v2Layer4].forEach(function (layer) {
     Object.keys(layer).forEach(function (lang) {
       var base = translations[lang] || {};
       var extra = layer[lang];

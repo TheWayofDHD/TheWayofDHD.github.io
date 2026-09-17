@@ -63,6 +63,10 @@
   }
 
   function getImageUrl(item) {
+    // The Diamond item (Dickpaper) is a ~21 MB source: TON API previews and
+    // IPFS gateways fail or stall on it (HTTP 422 / gateway timeout), so we
+    // serve a cached local copy instead.
+    if (getType(item) === 'Diamond') return 'assets/dickpaper.jpg';
     var previews = item.previews || [];
     if (previews.length) return previews[previews.length - 1].url || '';
     var image = item.metadata && item.metadata.image;
@@ -161,7 +165,7 @@
 
     return '<article class="nft-card" data-type="' + escapeHtml(typeKey) + '">' +
       '<div class="nft-image-wrap">' +
-        '<img class="nft-image" src="' + escapeHtml(imageUrl) + '" alt="' + alt + '" loading="lazy" width="400" height="400">' +
+        '<img class="nft-image" src="' + escapeHtml(imageUrl) + '" alt="' + alt + '" loading="lazy" width="400" height="400" data-fallback="assets/dickpaper-thumb.jpg">' +
         '<span class="nft-rarity ' + escapeHtml(typeKey) + '">' + escapeHtml(type) + '</span>' +
       '</div>' +
       '<div class="nft-info">' +
@@ -196,6 +200,16 @@
     }
 
     grid.innerHTML = items.map(renderCard).join('');
+
+    // If a remote preview dies, swap in a tiny local placeholder.
+    grid.querySelectorAll('img[data-fallback]').forEach(function (img) {
+      img.addEventListener('error', function () {
+        if (img.dataset.fallback) {
+          img.src = img.dataset.fallback;
+          delete img.dataset.fallback;
+        }
+      });
+    });
   }
 
   // --- Pagination ---
@@ -233,6 +247,27 @@
     state.items = items;
     if (items.length) state.total = Math.max(state.total, state.page * PAGE_SIZE + items.length);
 
+    // A type filter can hide every item of the current window (e.g. the 21
+    // Exclusive items live at the very end of the collection). Keep fetching
+    // forward — with large strides to respect the API rate limit — until at
+    // least one matching item shows up.
+    var nextOffset = state.page * PAGE_SIZE + state.items.length;
+    var guard = 0;
+    while (state.filter !== 'all' && visibleItems().length === 0 &&
+           nextOffset < state.total && guard < 3) {
+      guard++;
+      var more = await fetchNFTs(nextOffset, 1000);
+      if (!more.length) {
+        // one soft retry: the anonymous API tier occasionally throttles
+        await new Promise(function (resolve) { setTimeout(resolve, 900); });
+        more = await fetchNFTs(nextOffset, 1000);
+      }
+      if (!more.length) break;
+      nextOffset += more.length;
+      state.items = state.items.concat(more);
+      state.total = Math.max(state.total, nextOffset);
+    }
+
     if (loadingEl) loadingEl.style.display = 'none';
     renderGrid();
     updatePagination();
@@ -241,19 +276,25 @@
   // --- Filters ---
   function initFilters() {
     if (filterBar) {
+      // Deep link from the Exclusive carousel: collection.html?filter=exclusive
+      var fromQuery = /[?&]filter=([a-z]+)/.exec(window.location.search || '');
+      var wanted = fromQuery ? fromQuery[1] : '';
       filterBar.querySelectorAll('.filter-btn').forEach(function (btn) {
+        var isTarget = btn.getAttribute('data-filter') === wanted;
+        btn.classList.toggle('active', isTarget || (btn.classList.contains('active') && !wanted));
+        if (isTarget) state.filter = wanted;
         btn.addEventListener('click', function () {
           filterBar.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
           btn.classList.add('active');
           state.filter = btn.getAttribute('data-filter') || 'all';
-          renderGrid();
+          goToPage(state.page);
         });
       });
     }
     if (saleCheckbox) {
       saleCheckbox.addEventListener('change', function () {
         state.saleOnly = saleCheckbox.checked;
-        renderGrid();
+        goToPage(state.page);
       });
     }
   }

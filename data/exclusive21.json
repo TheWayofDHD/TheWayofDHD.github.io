@@ -1,0 +1,167 @@
+{
+  "type": "Exclusive",
+  "count": 21,
+  "expected": 21,
+  "complete": true,
+  "generatedAt": "2026-09-17T16:25:07Z",
+  "items": [
+    {
+      "index": 1001,
+      "name": "Blockchain Master",
+      "address": "EQArybjRTXTUTOEVu76SrWxOPnVAbfBR6xppSnYkj9RmIQvP",
+      "image": "https://cache.tonapi.io/imgproxy/A0tFDcuUPNS7Pjl66rJyezI9mzuGj9xJRkwJy5MyEnU/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDEucG5n.webp"
+    },
+    {
+      "index": 1002,
+      "name": "Connoisseur of Art",
+      "address": "EQBrizx1i7tPdHm4N5xsoIWr---verQEkTeKZxNEJgDeT8Ix",
+      "image": "https://cache.tonapi.io/imgproxy/4r5kBqIq3LJ88KEiM723IFfErahmpbtCE19YQiMP17U/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDIucG5n.webp"
+    },
+    {
+      "index": 1003,
+      "name": "Sacred DHD",
+      "address": "EQCWmPMKfSENFje6GwADYKyuTSSr5URJi3CmyS8sPFhTn_mM",
+      "image": "https://cache.tonapi.io/imgproxy/NIJH9my1Un523bB1K06xOHyAkcmUjZ_YfbR7hlT1iEU/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDMucG5n.webp"
+    },
+    {
+      "index": 1004,
+      "name": "Boar's friend",
+      "address": "EQBhRWKYCohaPEFnBbgyv8GHiB7fTRVBzLuW710vSiQ_AY07",
+      "image": "https://cache.tonapi.io/imgproxy/iOH_wNsEyZLSYR7l8drlt3H7RukEEqXsxjZzMhOxdec/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDQucG5n.webp"
+    },
+    {
+      "index": 1005,
+      "name": "Vincent Vega",
+      "address": "EQDmxlKRYEAkrDzB33Pcg6y8a_g1FXXRlp-F5IO9PEjHSFpk",
+      "image": "https://cache.tonapi.io/imgproxy/w7L0mnxouQyb8hRg3ZeOZ1lxT2O3bRQ0jxTaQqKP0sg/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDUucG5n.webp"
+    },
+    {
+      "index": 1006,
+      "name": "DHD Mining",
+      "address": "EQCX0A1iMwncUExxqnjkMMjsv-jSGQKXcnFPGPuVWreuBNJN",
+      "image": "https://cache.tonapi.io/imgproxy/9u7HRBM3j20rlZzBwiqpZMhZ3OHGmuz8i8inCG0ziko/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDYucG5n.webp"
+    },
+    {
+      "index": 1007,
+      "name": "Raccoon-poloskun",
+      "address": "EQBGJoB0S9e4tSmQLt9tyEk24ELBj8UEgcQY9HysYk4kFS1C",
+      "image": "https://cache.tonapi.io/imgproxy/1xDacdMIS9GqG43wWQpx7cRZvNdk54zuNP3lodyZfdM/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDcucG5n.webp"
+    },
+    {
+      "index": 1008,
+      "name": "Cat Helper",
+      "address": "EQBJKwcVP86dsNnHNRMbmveo3jIvHroWUXf2wQYdD63ypp1O",
+      "image": "https://cache.tonapi.io/imgproxy/YbBFXeDKk8220GXZ-QWXjMs30wFLhfgQEiVbe9fipVI/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDgucG5n.webp"
+    },
+    {
+      "index": 1009,
+      "name": "Bulletproof",
+      "address": "EQA-4dtiSN5V_ggrbJG8TcALBx-6EYUsVACleHT_ek2-oAj9",
+      "image": "https://cache.tonapi.io/imgproxy/GUKWVMHs5I9UFtzE94s94UumQwiqilkjmlZ7BcdXlcE/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMDkucG5n.webp"
+    },
+    {
+      "index": 1010,
+      "name": "Fire Penix",
+      "address": "EQD8ktUOitVyy3HlmHQVLVSAKaZSxqKgRe4-hkRZPO9fF9Yy",
+      "image": "https://cache.tonapi.io/imgproxy/wcVyP3m1v01V1cHL9Ig93EYpkn_fA7ZsEgKq2zqCN3w/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTAucG5n.webp"
+    },
+    {
+      "index": 1011,
+      "name": "Russian Raver",
+      "address": "EQC7PZ8PauI8SVPukLyTl02TB6MdZZyWw_MU03_4HjNYoWPu",
+      "image": "https://cache.tonapi.io/imgproxy/Ochez9uz04vUXa7cOyaE5sh1ofTcudps4nfNonPV5ws/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTEucG5n.webp"
+    },
+    {
+      "index": 1012,
+      "name": "Diller",
+      "address": "EQA1xpLBZXwwkbpTpW0QycyzPcb7PgdFl_1iXxmfrDP8ZHiI",
+      "image": "https://cache.tonapi.io/imgproxy/6fz1b8zTn8sKgZ0gofrFTuLZHIfRNTGPbp-YesVGIr0/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTIucG5n.webp"
+    },
+    {
+      "index": 1013,
+      "name": "Mafioznik",
+      "address": "EQCF2DMRnB5wBJ-9IVJAv0dIN6Jrr5gL6jgLdCzI3DGZIhyu",
+      "image": "https://cache.tonapi.io/imgproxy/03U2Dwxp_7OGlNaMCAsmgpcXD-O1ILyWpG4CUljx7n0/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTMucG5n.webp"
+    },
+    {
+      "index": 1014,
+      "name": "Soldier",
+      "address": "EQCdh6oGjhjKNpKqfljlXDGBHocVDtlHndIBLG67HWtehERI",
+      "image": "https://cache.tonapi.io/imgproxy/vfiDdn4NtI1g5wmEwKYBRCJnmeYIQia3HhNeCSEWu9k/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTQucG5n.webp"
+    },
+    {
+      "index": 1015,
+      "name": "Dragon's Daddy",
+      "address": "EQCzTOJkqGmfUriYwQqcaQKaPIfLAtlUrNV39h3_7Zk_NlkL",
+      "image": "https://cache.tonapi.io/imgproxy/DWz2OoRga2WzXlGQ52wJkRiPkAFXq2OdWmrPUcDFvFg/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTUucG5n.webp"
+    },
+    {
+      "index": 1016,
+      "name": "Kind Ghost",
+      "address": "EQAcfQwv9n-mW15V2yHWXVDtBd8eUu8dZZgItW9ZXBbrB_d0",
+      "image": "https://cache.tonapi.io/imgproxy/fJxd1KyBF5Cn8drsFvWI7i-zaBVq2osSZEIM8Hv1aZs/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTYucG5n.webp"
+    },
+    {
+      "index": 1017,
+      "name": "Woof Woof",
+      "address": "EQBCtY3m0EpFuue2jtEfch4UVEe7OcLm2e4nLCrMADed3t2c",
+      "image": "https://cache.tonapi.io/imgproxy/6VG9J0ccGPh0sGGUk491Lc53yaDC0XYyjtd6jQHUyIw/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTcucG5n.webp"
+    },
+    {
+      "index": 1018,
+      "name": "Sexy and I Know It",
+      "address": "EQAGVtH-HQXkg20aTea7NRYMM1npPz_HmJxV0ta6lR-KS4FG",
+      "image": "https://cache.tonapi.io/imgproxy/XLVlgSAg3N-Rhf9HR6Z1haATPbFC2N-4CJS1aBDbNAA/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTgucG5n.webp"
+    },
+    {
+      "index": 1019,
+      "name": "Fighting Cock",
+      "address": "EQBBF69oaS17I2OgkKZKvOYhzO4UjasQZsX_7_SKIPtFamnC",
+      "image": "https://cache.tonapi.io/imgproxy/DidirDBeR2kIBV4Ip3Mf-vT8roqcDrZuz5De9kaPyko/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMTkucG5n.webp"
+    },
+    {
+      "index": 1020,
+      "name": "AntiAgent",
+      "address": "EQASz3-SpMERwxYz4I4FnAGuSWEA5taP1sGEoIuIXsz2BUCD",
+      "image": "https://cache.tonapi.io/imgproxy/dmC9YZUwWDxUk_iu1VqwQ6o1aO7js3XR8dVd-EI-ulQ/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMjAucG5n.webp"
+    },
+    {
+      "index": 1021,
+      "name": "Morgenstern",
+      "address": "EQC_efLGmGtTzSIMS_pqwawKTuBwwhlrZIai08vpg26kGsGX",
+      "image": "https://cache.tonapi.io/imgproxy/QCwDiQJaWVPSmJspLoRN5tp8WDWX_AhRO4qarzxPXeU/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEwMjEucG5n.webp"
+    }
+  ],
+  "epicSample": [
+    {
+      "index": 13,
+      "name": "DHD #13",
+      "address": "EQB30dufMKO3XMYVpBiWlfOxHzJrKwRbk0DOGsoK2ZBDsL4B",
+      "image": "https://cache.tonapi.io/imgproxy/CrHUuSDt27a0VVwQnTaAIBJiMcafV88XC1dC9BSX83s/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzEzLnBuZw.webp"
+    },
+    {
+      "index": 214,
+      "name": "DHD #214",
+      "address": "EQBCPjF9A_00JVwyyjN3v4an0NR0yvpSSeabzcnjU9l3LosV",
+      "image": "https://cache.tonapi.io/imgproxy/l-rV1p9U8iLB84bla8ogXJ_LzBOCqbvwE-gKuu3YMrc/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzIxNC5wbmc.webp"
+    },
+    {
+      "index": 507,
+      "name": "DHD #507",
+      "address": "EQBA6G-kODhZyCYiIvf63uXUw1uO8JMOpt22d3K6GAkwrWM9",
+      "image": "https://cache.tonapi.io/imgproxy/2l-xOcUVJZU-hlJBc-lmrfW1zqwI7hzuYt0kUzO_Z-Y/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5LzUwNy5wbmc.webp"
+    },
+    {
+      "index": 865,
+      "name": "DHD #865",
+      "address": "EQDCDscCwUXExpVz0ik0PadtORrFzDx8POT3Y-XNGjRQ8POq",
+      "image": "https://cache.tonapi.io/imgproxy/5yK6ZuxrOe5K-ea_mH5VU9WfRhSBlRShJHc7t7zJOk8/rs:fill:1500:1500:1/g:no/aXBmczovL2JhZnliZWljM2NzN29lYnN1b2F3cWdoZ3hydHhqcXVoM213anVhYzV1Nmg3aG8yYmZ2dWxndG1lZjZ5Lzg2NS5wbmc.webp"
+    }
+  ],
+  "diamond": {
+    "index": 0,
+    "name": "DHD Dickpaper",
+    "address": "EQA2NA_6coQ-qUE8hBlICvnaNVyT2tUQQ5JXhKw-JUFadX7B",
+    "image": "assets/dickpaper.jpg"
+  }
+}

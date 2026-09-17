@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DHD Advent — a fresh postcard every day on Telegram (Путь ХЧК)</title>
+  <meta name="description" content="DHD Advent is a Telegram bot that sends collection postcards every day: 1000 unique cards, daily messages, free to join. Open @DHDAdventbot and get today's card.">
+  <meta name="keywords" content="DHD Advent, Путь ХЧК открытки, DHD Advent bot, TON NFT postcards, @DHDAdventbot">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="canonical" href="https://thewayofdhd.github.io/advent.html">
+
+  <link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/advent.html">
+  <link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/advent.html?lang=en">
+  <link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/advent.html?lang=ru">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Way of DHD">
+  <meta property="og:title" content="DHD Advent — a fresh postcard every day on Telegram">
+  <meta property="og:description" content="The DHD Advent bot sends every subscriber a postcard a day: 1000 unique cards from the Way of DHD collection.">
+  <meta property="og:url" content="https://thewayofdhd.github.io/advent.html">
+  <meta property="og:image" content="https://thewayofdhd.github.io/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DHD Advent — a postcard a day">
+  <meta name="twitter:description" content="Open @DHDAdventbot in Telegram and collect daily postcards.">
+  <meta name="twitter:image" content="https://thewayofdhd.github.io/assets/og-image.jpg">
+
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://thewayofdhd.github.io/advent.html#page",
+        "name": "DHD Advent — a fresh postcard every day on Telegram",
+        "url": "https://thewayofdhd.github.io/advent.html",
+        "inLanguage": "en",
+        "dateModified": "2026-09-17",
+        "isPartOf": { "@type": "WebSite", "name": "The Way of DHD", "url": "https://thewayofdhd.github.io/" },
+        "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["h1", ".section-lead"] },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "DHD Advent",
+          "applicationCategory": "Bot",
+          "operatingSystem": "Telegram",
+          "url": "https://t.me/DHDAdventbot",
+          "description": "Telegram bot that sends one Way of DHD postcard every day."
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thewayofdhd.github.io/" },
+          { "@type": "ListItem", "position": 2, "name": "Advent", "item": "https://thewayofdhd.github.io/advent.html" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="./" class="nav-brand" aria-label="The Way of DHD — home">
+        <img src="assets/logo-collection.png" alt="The Way of DHD logo" class="nav-logo">
+        <span class="nav-title">The Way of DHD</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="./" data-i18n="nav-home">Home</a></li>
+        <li><a href="collection.html" data-i18n="nav-collection">Collection</a></li>
+        <li><a href="dickpaper.html" data-i18n="nav-dickpaper">Dickpaper</a></li>
+        <li><a href="advent.html" class="active" data-i18n="nav-advent">Advent</a></li>
+        <li><a href="./#token" data-i18n="nav-token">$DHD</a></li>
+        <li><a href="./#faq" data-i18n="nav-faq">FAQ</a></li>
+        <li><a href="https://t.me/WayofDHD" target="_blank" rel="noopener noreferrer" data-i18n="nav-telegram">Telegram</a></li>
+        <li><a href="https://getgems.io/collection/EQDzvSAKspPnYIhuqZe0_dMfrEEUlwKVzb4dJo0sRoxZwRZe" target="_blank" rel="noopener noreferrer" class="nav-cta" data-i18n="nav-getgems">Getgems</a></li>
+      </ul>
+      <div class="lang-selector">
+        <label class="visually-hidden" for="lang-select">Language</label>
+        <select id="lang-select" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="ru">RU</option>
+          <option value="es">ES</option>
+          <option value="zh">&#20013;&#25991;</option>
+          <option value="pt">PT</option>
+          <option value="tr">TR</option>
+          <option value="ja">&#26085;&#26412;&#35486;</option>
+          <option value="ko">&#54620;&#44397;&#50612;</option>
+          <option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
+          <option value="hi">&#2361;&#2367;&#2306;&#2342;&#2368;</option>
+        </select>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero advent-hero">
+    <h1 data-i18n="advent-title">DHD Advent — a postcard a day</h1>
+    <p data-i18n="advent-lead">The DHD Advent Telegram bot sends every subscriber one postcard every day: 1000 unique cards written in the voice of the collection. Free, no wallet needed — just open the bot.</p>
+  </section>
+
+  <!-- Steps -->
+  <section class="advent-how">
+    <div class="container">
+      <div class="advent-steps fade-in">
+        <div class="advent-step">
+          <div class="advent-step-num">1</div>
+          <h3 data-i18n="advent-step1-title">Open the bot</h3>
+          <p data-i18n="advent-step1-text">Tap the button below — it opens @DHDAdventbot in Telegram. Press Start.</p>
+        </div>
+        <div class="advent-step">
+          <div class="advent-step-num">2</div>
+          <h3 data-i18n="advent-step2-title">Get today's card</h3>
+          <p data-i18n="advent-step2-text">The bot sends a fresh postcard every day — a holiday greeting or a message from DHD himself.</p>
+        </div>
+        <div class="advent-step">
+          <div class="advent-step-num">3</div>
+          <h3 data-i18n="advent-step3-title">Collect the set</h3>
+          <p data-i18n="advent-step3-text">1000 unique cards exist. Come back daily and collect the full Way of DHD set.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="advent-cta fade-in">
+    <a href="https://t.me/DHDAdventbot" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="advent-cta">Get today's postcard in Telegram</a>
+    <p class="section-note" data-i18n="advent-cta-note">@DHDAdventbot — free, works on phone and desktop Telegram.</p>
+  </section>
+
+  <!-- Facts -->
+  <section class="advent-about">
+    <div class="container">
+      <div class="advent-facts fade-in">
+        <div>
+          <div class="advent-fact-value">1000</div>
+          <div class="advent-fact-label" data-i18n="advent-fact-cards">Unique cards</div>
+        </div>
+        <div>
+          <div class="advent-fact-value">1/day</div>
+          <div class="advent-fact-label" data-i18n="advent-fact-cadence">One postcard per day</div>
+        </div>
+        <div>
+          <div class="advent-fact-value">0 TON</div>
+          <div class="advent-fact-label" data-i18n="advent-fact-price">Free to join</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross links -->
+  <section class="advent-links">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-tag" data-i18n="advent-more-tag">More of the project</div>
+        <h2 class="section-title small" data-i18n="advent-more-title">Keep exploring the Way of DHD</h2>
+      </div>
+      <div class="links-grid">
+        <a href="collection.html" class="link-card fade-in fade-in-delay-1">
+          <div class="link-info">
+            <h3 data-i18n="nav-collection">Collection</h3>
+            <p data-i18n="links-getgems-text">Browse and trade DHD NFTs</p>
+          </div>
+        </a>
+        <a href="dickpaper.html" class="link-card fade-in fade-in-delay-2">
+          <div class="link-info">
+            <h3 data-i18n="links-paper-title">The Dickpaper</h3>
+            <p data-i18n="links-paper-text">Full-resolution 1-of-1 viewer</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-text" data-i18n="footer-text">The Way of DHD — Путь ХЧК. Built on TON.</span>
+      <div class="footer-links">
+        <a href="./" data-i18n="nav-home">Home</a>
+        <a href="collection.html" data-i18n="nav-collection">Collection</a>
+        <a href="dickpaper.html" data-i18n="nav-dickpaper">Dickpaper</a>
+        <a href="https://t.me/DHDAdventbot" target="_blank" rel="noopener noreferrer">@DHDAdventbot</a>
+        <a href="https://t.me/WayofDHD" target="_blank" rel="noopener noreferrer">Telegram</a>
+      </div>
+      <span class="footer-note" data-i18n="footer-note">Community project. Information is provided for reference and is not financial advice.</span>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

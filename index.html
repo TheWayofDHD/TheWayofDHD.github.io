@@ -38,7 +38,6 @@
   <meta name="twitter:description" content="1000 Epic, 21 Exclusive, 1 Diamond Dickpaper. Live floor and rarity data.">
   <meta name="twitter:image" content="https://thewayofdhd.github.io/assets/og-image.jpg">
 
-  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -87,13 +86,14 @@
   <nav class="nav">
     <div class="container nav-inner">
       <a href="./" class="nav-brand" aria-label="The Way of DHD — home">
-        <img src="assets/logo.svg" alt="The Way of DHD logo" class="nav-logo">
+        <img src="assets/logo-collection.png" alt="The Way of DHD logo" class="nav-logo">
         <span class="nav-title">The Way of DHD</span>
       </a>
       <ul class="nav-links" id="nav-links">
         <li><a href="./" class="active" data-i18n="nav-home">Home</a></li>
         <li><a href="collection.html" data-i18n="nav-collection">Collection</a></li>
         <li><a href="dickpaper.html" data-i18n="nav-dickpaper">Dickpaper</a></li>
+        <li><a href="advent.html" data-i18n="nav-advent">Advent</a></li>
         <li><a href="#token" data-i18n="nav-token">$DHD</a></li>
         <li><a href="#faq" data-i18n="nav-faq">FAQ</a></li>
         <li><a href="https://t.me/WayofDHD" target="_blank" rel="noopener noreferrer" data-i18n="nav-telegram">Telegram</a></li>
@@ -123,7 +123,7 @@
   <!-- Hero -->
   <section class="hero">
     <div>
-      <img src="assets/logo.svg" alt="HCHK mark of the Way of DHD NFT collection" class="hero-logo" width="128" height="128">
+      <img src="assets/logo-collection.png" alt="The Way of DHD collection logo — DHD character in a red cap" class="hero-logo" width="128" height="128">
       <h1 class="hero-title" data-i18n="hero-title">The Way of DHD — 1022 NFT Collection on TON</h1>
       <p class="hero-subtitle" data-i18n="hero-subtitle">The Way of DHD (Путь ХЧК) is a hand-drawn NFT collection on the TON blockchain: 1022 characters, one Diamond Dickpaper and a story that has been unfolding since 30 May 2022.</p>
       <div class="hero-actions">
@@ -194,6 +194,54 @@
         <span data-i18n="types-note">Data combines all 1022 on-chain items: type traits, active sale lots and floor per type. The Diamond item is the Dickpaper.</span>
         <a href="dickpaper.html" data-i18n="types-note-link">Open the full-resolution Dickpaper</a>
       </p>
+    </div>
+  </section>
+
+  <!-- Exclusive 21 carousel -->
+  <section class="exclusive" id="exclusive">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-tag" data-i18n="exq-tag">Exclusive · 2.05%</div>
+        <h2 class="section-title" data-i18n="exq-title">Exclusive 21 — the rare names of the collection</h2>
+        <p class="section-lead" data-i18n="exq-lead">Only 21 of the 1022 pieces carry the Exclusive type — 2.05% of the supply. Each one has a name of its own. Drag the strip with your mouse or use the arrows; every card opens on Getgems.</p>
+      </div>
+      <div class="exq-carousel fade-in" id="exq-carousel">
+        <button type="button" class="exq-arrow exq-arrow-prev" id="exq-prev" aria-label="Previous">&#8592;</button>
+        <div class="exq-track" id="exq-track" tabindex="0" aria-label="Exclusive 21 carousel"></div>
+        <button type="button" class="exq-arrow exq-arrow-next" id="exq-next" aria-label="Next">&#8594;</button>
+      </div>
+      <p class="exq-note fade-in">
+        <span data-i18n="exq-note">All 21 Exclusive items, straight from the on-chain type trait.</span>
+        <a href="collection.html?filter=exclusive" data-i18n="exq-note-link">Open the Exclusive filter</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Rarity roulette -->
+  <section class="roulette" id="roulette">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-tag" data-i18n="rlt-tag">Interactive</div>
+        <h2 class="section-title" data-i18n="rlt-title">ХЧК roulette — test your luck</h2>
+        <p class="section-lead" data-i18n="rlt-lead">The odds are not invented: they are the real shares of the three on-chain types. 97.85% of spins land on Epic, 2.05% on Exclusive, and 0.10% — the rarest outcome — on the Diamond Dickpaper.</p>
+      </div>
+      <div class="rlt-machine fade-in">
+        <div class="rlt-window" id="rlt-window" aria-live="polite">
+          <span class="rlt-pointer" aria-hidden="true"></span>
+          <div class="rlt-strip" id="rlt-strip"></div>
+        </div>
+        <div class="rlt-panel">
+          <button type="button" class="btn btn-primary" id="rlt-spin" data-i18n="rlt-spin">Spin the roulette</button>
+          <p class="rlt-odds">
+            <span class="type-chip type-epic">Epic 97.85%</span>
+            <span class="type-chip type-exclusive">Exclusive 2.05%</span>
+            <span class="type-chip type-diamond">Diamond 0.10%</span>
+          </p>
+          <p class="rlt-result" id="rlt-result"></p>
+          <p class="rlt-stats" id="rlt-stats"></p>
+        </div>
+      </div>
+      <p class="section-note" data-i18n="rlt-note">An entertainment demo: spins do not mint anything and do not affect the blockchain. The weights replicate the real supply: 1000 / 21 / 1.</p>
     </div>
   </section>
 
@@ -379,6 +427,12 @@
             <p data-i18n="links-paper-text">Full-resolution 1-of-1 viewer</p>
           </div>
         </a>
+        <a href="advent.html" class="link-card fade-in fade-in-delay-3">
+          <div class="link-info">
+            <h3 data-i18n="links-advent-title">DHD Advent bot</h3>
+            <p data-i18n="links-advent-text">A fresh postcard every day</p>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -404,6 +458,7 @@
       <div class="footer-links">
         <a href="collection.html" data-i18n="nav-collection">Collection</a>
         <a href="dickpaper.html" data-i18n="nav-dickpaper">Dickpaper</a>
+        <a href="advent.html" data-i18n="nav-advent">Advent</a>
         <a href="https://getgems.io/collection/EQDzvSAKspPnYIhuqZe0_dMfrEEUlwKVzb4dJo0sRoxZwRZe" target="_blank" rel="noopener noreferrer">Getgems</a>
         <a href="https://t.me/WayofDHD" target="_blank" rel="noopener noreferrer">Telegram</a>
       </div>
@@ -487,6 +542,8 @@
   </script>
 
   <script src="js/i18n.js"></script>
+  <script src="js/carousel.js"></script>
+  <script src="js/roulette.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
