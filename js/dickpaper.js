@@ -60,7 +60,7 @@
 
   function setScale(next, anchorX, anchorY) {
     var prev = scale;
-    scale = clamp(next, MIN_SCALE, MAX_SCALE);
+    scale = clamp(next, MIN_SCALE, Math.max(MAX_SCALE, actualScale));
     if (scale === prev) return;
 
     var rect = viewer.getBoundingClientRect();
@@ -281,6 +281,7 @@
   });
 
   window.addEventListener('resize', function () {
+    if (loaded) actualScale = image.naturalWidth / Math.max(1, Math.min(viewer.clientWidth, viewer.clientHeight));
     clampPan();
     applyTransform();
   });
