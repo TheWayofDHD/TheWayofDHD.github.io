@@ -78,7 +78,11 @@
       html += tileHtml(pickItem(type), type);
     }
     strip.innerHTML = html;
+    // Reset instantly (no transition): otherwise the next spin would start
+    // from the previous target position and look like it never spins again.
+    strip.style.transition = 'none';
     strip.style.transform = 'translate3d(0,0,0)';
+    void strip.offsetWidth; // commit the reset before the next transition starts
   }
 
   function setStripOffset(offsetPx, animate) {

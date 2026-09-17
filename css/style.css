@@ -1432,7 +1432,9 @@ img {
 }
 
 /* --- Exclusive 21 carousel --- */
-.exclusive {
+/* NOTE: never name a rule bare ".exclusive" — the rarity badge on NFT cards
+   carries class "nft-rarity exclusive" and would inherit this padding. */
+.exq-section {
   padding: 80px 24px;
 }
 

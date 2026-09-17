@@ -46,17 +46,37 @@
     if (zoomEl) zoomEl.textContent = Math.round(scale * 100) + '%';
   }
 
-  function bounds() {
+  // Rendered content rect: with object-fit:contain the bitmap is letterboxed
+  // inside the element, so pan limits must be computed from the bitmap edges,
+  // not from the element box — otherwise part of the artwork is unreachable.
+  function contentRect() {
     var vw = viewer.clientWidth;
     var vh = viewer.clientHeight;
-    var size = Math.min(vw, vh);
-    return { size: size, limitX: Math.max(0, (size * scale - vw) / 2), limitY: Math.max(0, (size * scale - vh) / 2) };
+    var nw = image.naturalWidth || 1;
+    var nh = image.naturalHeight || 1;
+    var k = Math.min(vw / nw, vh / nh);
+    var drawnW = nw * k;
+    var drawnH = nh * k;
+    var offX = (vw - drawnW) / 2;
+    var offY = (vh - drawnH) / 2;
+    return {
+      vw: vw,
+      vh: vh,
+      left: offX * scale,
+      top: offY * scale,
+      right: (offX + drawnW) * scale,
+      bottom: (offY + drawnH) * scale
+    };
   }
 
   function clampPan() {
-    var b = bounds();
-    tx = clamp(tx, -b.limitX, b.limitX);
-    ty = clamp(ty, -b.limitY, b.limitY);
+    var c = contentRect();
+    var minX = c.vw - c.right;
+    var maxX = -c.left;
+    tx = minX > maxX ? (minX + maxX) / 2 : clamp(tx, minX, maxX);
+    var minY = c.vh - c.bottom;
+    var maxY = -c.top;
+    ty = minY > maxY ? (minY + maxY) / 2 : clamp(ty, minY, maxY);
   }
 
   function setScale(next, anchorX, anchorY) {
@@ -67,12 +87,10 @@
     var rect = viewer.getBoundingClientRect();
     var ax = (anchorX === undefined) ? rect.width / 2 : anchorX;
     var ay = (anchorY === undefined) ? rect.height / 2 : anchorY;
-    var offsetX = ax - rect.width / 2;
-    var offsetY = ay - rect.height / 2;
     var factor = scale / prev;
 
-    tx = (tx - offsetX) * factor + offsetX;
-    ty = (ty - offsetY) * factor + offsetY;
+    tx = ax - factor * (ax - tx);
+    ty = ay - factor * (ay - ty);
     clampPan();
     applyTransform();
   }
