@@ -10,16 +10,13 @@
 
   var DATA_URL = 'data/exclusive21.json';
   var GETGEMS_ITEM = 'https://getgems.io/nft/';
-  // Real shares, exact counts out of 1022 total supply.
-  var WEIGHTS = [
-    { type: 'Epic', weight: 1000 },
-    { type: 'Exclusive', weight: 21 },
-    { type: 'Diamond', weight: 1 }
-  ];
+  // Real odds for the outcome, exact counts out of the 1022 total supply
+  // (Diamond 1, Exclusive 21, Epic 1000) — see pickWeighted().
   var TILE = 132;            // tile width + gap, must match CSS
   var VISIBLE = 4;           // tiles visible in the window
-  var SPIN_TILES = 26;       // total tiles in the strip
-  var SPIN_MS = 3200;
+  var SPIN_TILES = 30;       // total tiles in the strip
+  var MIN_SPIN_MS = 2600;
+  var MAX_SPIN_MS = 3800;
 
   var strip = document.getElementById('rlt-strip');
   var spinBtn = document.getElementById('rlt-spin');
@@ -30,6 +27,7 @@
   if (!strip || !spinBtn) return;
 
   var pool = { Epic: [], Exclusive: [], Diamond: [] };
+  var lastWinner = { Epic: null, Exclusive: null, Diamond: null };
   var counts = { Epic: 0, Exclusive: 0, Diamond: 0 };
   var total = 0;
   var spinning = false;
@@ -55,10 +53,31 @@
     return 'Epic';
   }
 
+  function pickWinner(type) {
+    var list = pool[type];
+    if (!list || !list.length) return null;
+    // never show the same item twice in a row when the pool allows
+    var candidates = list;
+    if (list.length > 1 && lastWinner[type]) {
+      candidates = list.filter(function (it) { return it.address !== lastWinner[type].address; });
+    }
+    var item = candidates[Math.floor(Math.random() * candidates.length)];
+    lastWinner[type] = item;
+    return item;
+  }
+
   function pickItem(type) {
     var list = pool[type];
     if (!list || !list.length) return null;
     return list[Math.floor(Math.random() * list.length)];
+  }
+
+  // Decorative tiles only — the outcome itself always uses the real odds.
+  function decorType() {
+    var r = Math.random();
+    if (r < 0.55) return 'Epic';
+    if (r < 0.9) return 'Exclusive';
+    return 'Diamond';
   }
 
   function tileHtml(item, type) {
@@ -71,10 +90,14 @@
     '</div>';
   }
 
-  function buildStrip() {
+  function buildStrip(landingIndex, winnerType, winner) {
     var html = '';
     for (var i = 0; i < SPIN_TILES; i++) {
-      var type = WEIGHTS[i % WEIGHTS.length].type;
+      if (i === landingIndex) {
+        html += tileHtml(winner, winnerType);
+        continue;
+      }
+      var type = decorType();
       html += tileHtml(pickItem(type), type);
     }
     strip.innerHTML = html;
@@ -85,8 +108,8 @@
     void strip.offsetWidth; // commit the reset before the next transition starts
   }
 
-  function setStripOffset(offsetPx, animate) {
-    strip.style.transition = animate ? ('transform ' + SPIN_MS + 'ms cubic-bezier(0.12, 0.8, 0.15, 1)') : 'none';
+  function setStripOffset(offsetPx, durationMs) {
+    strip.style.transition = 'transform ' + durationMs + 'ms cubic-bezier(0.12, 0.8, 0.15, 1)';
     strip.style.transform = 'translate3d(' + (-offsetPx) + 'px,0,0)';
   }
 
@@ -131,23 +154,19 @@
     if (resultEl) { resultEl.textContent = '…'; resultEl.className = 'rlt-result'; }
 
     var outcome = pickWeighted();
-    var winner = pickItem(outcome);
+    var winner = pickWinner(outcome);
 
-    buildStrip();
-    // Place the winning type on the tile the pointer will stop at.
-    var landingIndex = SPIN_TILES - VISIBLE - 1;
-    var tiles = strip.querySelectorAll('.rlt-tile');
-    var tile = tiles[landingIndex];
-    if (tile) {
-      tile.outerHTML = tileHtml(winner, outcome);
-    }
+    // Vary the stop position so consecutive spins do not look identical.
+    var landingIndex = SPIN_TILES - VISIBLE - 1 - Math.floor(Math.random() * 6);
+    buildStrip(landingIndex, outcome, winner);
 
+    var spinMs = Math.floor(MIN_SPIN_MS + Math.random() * (MAX_SPIN_MS - MIN_SPIN_MS));
     var offset = landingIndex * TILE + TILE / 2 - windowEl.clientWidth / 2;
     // Small random jitter so identical outcomes do not look identical,
     // but keep the pointer clearly inside the winning tile.
     offset += (Math.random() * 0.36 - 0.18) * TILE;
     requestAnimationFrame(function () {
-      setStripOffset(offset, true);
+      setStripOffset(offset, spinMs);
     });
 
     setTimeout(function () {
@@ -157,7 +176,7 @@
       renderStats();
       spinning = false;
       spinBtn.disabled = false;
-    }, SPIN_MS + 120);
+    }, spinMs + 120);
   }
 
   spinBtn.addEventListener('click', spin);
