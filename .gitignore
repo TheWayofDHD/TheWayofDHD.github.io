@@ -1,0 +1,7 @@
+# build cache created by scripts/build_collection_stats.py
+scripts/.cache/
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

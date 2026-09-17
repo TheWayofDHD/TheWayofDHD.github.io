@@ -1,0 +1,37 @@
+name: Refresh on-chain stats
+
+on:
+  schedule:
+    # every day at 06:17 UTC
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild collection-stats.json from TON API
+        run: python scripts/build_collection_stats.py --all
+
+      - name: Commit the snapshot if it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- data/collection-stats.json; then
+            echo "No changes in data/collection-stats.json"
+          else
+            git add data/collection-stats.json
+            git commit -m "chore(stats): refresh on-chain snapshot"
+            git push
+          fi
