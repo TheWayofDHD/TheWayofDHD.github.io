@@ -34,12 +34,22 @@
 
   <url>
     <loc>https://thewayofdhd.github.io/advent.html</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/advent.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/advent.html?lang=en"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/advent.html?lang=ru"/>
+  </url>
+
+  <url>
+    <loc>https://thewayofdhd.github.io/why.html</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/why.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/why.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/why.html?lang=ru"/>
   </url>
 
 </urlset>
