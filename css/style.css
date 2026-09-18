@@ -1884,6 +1884,108 @@ img {
   word-break: break-all;
 }
 
+/* --- Rarity explorer --- */
+.rarity-search {
+  width: min(560px, calc(100% - 48px));
+  margin: 0 auto 8px;
+  display: block;
+  padding: 12px 18px;
+  border: 1px solid var(--border-accent);
+  border-radius: 100px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.rarity-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.trait-group {
+  margin: 0 24px 34px;
+}
+
+.trait-group-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.trait-group-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  margin-left: 8px;
+}
+
+.trait-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 130px;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.trait-row:last-child {
+  border-bottom: 0;
+}
+
+.trait-value {
+  font-size: 0.9rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trait-row.is-rare .trait-value {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.trait-bar {
+  display: block;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.trait-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #7ef9ff);
+}
+
+.trait-num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .trait-row {
+    grid-template-columns: 130px 1fr 100px;
+    gap: 10px;
+  }
+
+  .trait-group {
+    margin: 0 12px 30px;
+  }
+}
+
 /* --- Responsive --- */
 
 @media (max-width: 1024px) {

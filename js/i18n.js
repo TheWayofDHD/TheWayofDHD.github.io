@@ -802,6 +802,16 @@
       'links-chat-text': 'Chat of the NFT collection',
       'links-coincomm-title': 'Coin community',
       'links-coincomm-text': '$DHD holders community',
+      'links-rarity-title': 'Rarity explorer',
+      'links-rarity-text': 'Every trait and its share, rarest first',
+      'rarity-title': 'Rarity explorer — every trait, every share',
+      'rarity-lead': 'All 1022 characters share 8 trait groups. Values are sorted rarest-first: the top rows are the ones almost nobody holds. Type is recorded on-chain for all 1022 items; the other groups live on the 1000 Epic characters.',
+      'rarity-search': 'Search a trait value…',
+      'rarity-values-shown': 'values shown',
+      'rarity-counted': 'counted',
+      'rarity-note': 'Traits are recorded on-chain and never change. Source: TON API items metadata, snapshot of the full 1022-item scan.',
+      'rarity-error': 'Rarity data could not be loaded. Refresh the page to retry.',
+      'rarity-link': 'Open the rarity explorer →',
       'why-title': 'Why buy a DHD NFT?',
       'why-lead': 'The Way of DHD (Путь ХЧК) is 1022 hand-drawn characters on TON, alive since 30 May 2022. A floor of 1 TON opens the door — and one Diamond, the Dickpaper, holds the management rights of the whole project.',
       'why-get-tag': 'Holder benefits',
@@ -897,6 +907,16 @@
       'links-chat-text': 'Чат NFT-коллекции',
       'links-coincomm-title': 'Комьюнити монеты',
       'links-coincomm-text': 'Сообщество холдеров $DHD',
+      'links-rarity-title': 'Эксплорер редкости',
+      'links-rarity-text': 'Каждый трейт и его доля — от редких',
+      'rarity-title': 'Эксплорер редкости — каждый трейт и его доля',
+      'rarity-lead': 'Все 1022 персонажа делят 8 групп трейтов. Сортировка — от самых редких: верхние строки почти ни у кого не встречаются. Type записан в блокчейн у всех 1022 предметов, остальные группы — у 1000 Epic-персонажей.',
+      'rarity-search': 'Найти значение трейта…',
+      'rarity-values-shown': 'значений показано',
+      'rarity-counted': 'учтено',
+      'rarity-note': 'Трейты записаны в блокчейне и никогда не меняются. Источник: метаданные предметов TON API, снимок полного скана из 1022 предметов.',
+      'rarity-error': 'Не удалось загрузить данные редкости. Обновите страницу, чтобы повторить.',
+      'rarity-link': 'Открыть эксплорер редкости →',
       'why-title': 'Почему стоит купить DHD NFT?',
       'why-lead': 'Путь ХЧК (The Way of DHD) — это 1022 нарисованных вручную персонажа на TON, живых с 30 мая 2022 года. Floor в 1 TON открывает дверь, а единственный Diamond — Dickpaper — хранит права управления всем проектом.',
       'why-get-tag': 'Что даёт холдерство',
@@ -980,6 +1000,13 @@
       var key = el.getAttribute('data-i18n');
       if (dict[key]) {
         el.textContent = dict[key];
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n-placeholder');
+      if (dict[key]) {
+        el.setAttribute('placeholder', dict[key]);
       }
     });
 

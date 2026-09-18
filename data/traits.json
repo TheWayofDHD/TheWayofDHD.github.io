@@ -1,0 +1,969 @@
+{
+  "total": 1022,
+  "scannedItems": 1022,
+  "complete": true,
+  "traitOrder": [
+    "Type",
+    "Background",
+    "Legs",
+    "Body",
+    "Hands",
+    "Attribute",
+    "Face",
+    "Head"
+  ],
+  "traits": {
+    "Type": {
+      "count": 1022,
+      "values": [
+        {
+          "value": "Epic",
+          "count": 1000,
+          "share": 97.85
+        },
+        {
+          "value": "Exclusive",
+          "count": 21,
+          "share": 2.05
+        },
+        {
+          "value": "Diamond",
+          "count": 1,
+          "share": 0.1
+        }
+      ]
+    },
+    "Background": {
+      "count": 1000,
+      "values": [
+        {
+          "value": "Violet",
+          "count": 96,
+          "share": 9.39
+        },
+        {
+          "value": "Blue-Green",
+          "count": 72,
+          "share": 7.05
+        },
+        {
+          "value": "Sky",
+          "count": 68,
+          "share": 6.65
+        },
+        {
+          "value": "Marley",
+          "count": 64,
+          "share": 6.26
+        },
+        {
+          "value": "Orange",
+          "count": 61,
+          "share": 5.97
+        },
+        {
+          "value": "Desert",
+          "count": 60,
+          "share": 5.87
+        },
+        {
+          "value": "Azure-Roze",
+          "count": 60,
+          "share": 5.87
+        },
+        {
+          "value": "Blue-Gray",
+          "count": 55,
+          "share": 5.38
+        },
+        {
+          "value": "Sharpness",
+          "count": 51,
+          "share": 4.99
+        },
+        {
+          "value": "Coral",
+          "count": 45,
+          "share": 4.4
+        },
+        {
+          "value": "Fog",
+          "count": 44,
+          "share": 4.31
+        },
+        {
+          "value": "Smoke",
+          "count": 42,
+          "share": 4.11
+        },
+        {
+          "value": "Bamboo",
+          "count": 35,
+          "share": 3.42
+        },
+        {
+          "value": "Banana",
+          "count": 34,
+          "share": 3.33
+        },
+        {
+          "value": "Mountains",
+          "count": 32,
+          "share": 3.13
+        },
+        {
+          "value": "Paper",
+          "count": 30,
+          "share": 2.94
+        },
+        {
+          "value": "Night",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "Forest",
+          "count": 27,
+          "share": 2.64
+        },
+        {
+          "value": "Space",
+          "count": 25,
+          "share": 2.45
+        },
+        {
+          "value": "Mystery",
+          "count": 22,
+          "share": 2.15
+        },
+        {
+          "value": "Gotham",
+          "count": 16,
+          "share": 1.57
+        },
+        {
+          "value": "Lights",
+          "count": 13,
+          "share": 1.27
+        },
+        {
+          "value": "Leaf",
+          "count": 10,
+          "share": 0.98
+        },
+        {
+          "value": "Diamonds",
+          "count": 9,
+          "share": 0.88
+        }
+      ]
+    },
+    "Legs": {
+      "count": 1000,
+      "values": [
+        {
+          "value": "Feet",
+          "count": 90,
+          "share": 8.81
+        },
+        {
+          "value": "Just do it",
+          "count": 61,
+          "share": 5.97
+        },
+        {
+          "value": "Converse",
+          "count": 60,
+          "share": 5.87
+        },
+        {
+          "value": "Socks",
+          "count": 57,
+          "share": 5.58
+        },
+        {
+          "value": "Red Green",
+          "count": 55,
+          "share": 5.38
+        },
+        {
+          "value": "Homely",
+          "count": 53,
+          "share": 5.19
+        },
+        {
+          "value": "Emo",
+          "count": 51,
+          "share": 4.99
+        },
+        {
+          "value": "Low-Top",
+          "count": 51,
+          "share": 4.99
+        },
+        {
+          "value": "Loafers",
+          "count": 47,
+          "share": 4.6
+        },
+        {
+          "value": "Chelsea",
+          "count": 42,
+          "share": 4.11
+        },
+        {
+          "value": "Boots",
+          "count": 42,
+          "share": 4.11
+        },
+        {
+          "value": "Wellies",
+          "count": 39,
+          "share": 3.82
+        },
+        {
+          "value": "School",
+          "count": 31,
+          "share": 3.03
+        },
+        {
+          "value": "Brogues",
+          "count": 31,
+          "share": 3.03
+        },
+        {
+          "value": "Volleyball",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "Trailbreaker",
+          "count": 28,
+          "share": 2.74
+        },
+        {
+          "value": "Rave",
+          "count": 27,
+          "share": 2.64
+        },
+        {
+          "value": "Mid-calf",
+          "count": 26,
+          "share": 2.54
+        },
+        {
+          "value": "Fireman",
+          "count": 26,
+          "share": 2.54
+        },
+        {
+          "value": "Ice-skate",
+          "count": 24,
+          "share": 2.35
+        },
+        {
+          "value": "Combat",
+          "count": 23,
+          "share": 2.25
+        },
+        {
+          "value": "Louboutin",
+          "count": 22,
+          "share": 2.15
+        },
+        {
+          "value": "Trainer",
+          "count": 20,
+          "share": 1.96
+        },
+        {
+          "value": "Timberland",
+          "count": 18,
+          "share": 1.76
+        },
+        {
+          "value": "Boat",
+          "count": 18,
+          "share": 1.76
+        },
+        {
+          "value": "Slippers",
+          "count": 11,
+          "share": 1.08
+        },
+        {
+          "value": "Paws",
+          "count": 9,
+          "share": 0.88
+        },
+        {
+          "value": "Biker",
+          "count": 9,
+          "share": 0.88
+        }
+      ]
+    },
+    "Body": {
+      "count": 1000,
+      "values": [
+        {
+          "value": "Sweater",
+          "count": 74,
+          "share": 7.24
+        },
+        {
+          "value": "Peacemaker",
+          "count": 57,
+          "share": 5.58
+        },
+        {
+          "value": "Sailor",
+          "count": 52,
+          "share": 5.09
+        },
+        {
+          "value": "Tux",
+          "count": 52,
+          "share": 5.09
+        },
+        {
+          "value": "Sweats",
+          "count": 52,
+          "share": 5.09
+        },
+        {
+          "value": "Not Alcoholic",
+          "count": 48,
+          "share": 4.7
+        },
+        {
+          "value": "Aladdin",
+          "count": 48,
+          "share": 4.7
+        },
+        {
+          "value": "Repairman",
+          "count": 44,
+          "share": 4.31
+        },
+        {
+          "value": "Pajamas",
+          "count": 42,
+          "share": 4.11
+        },
+        {
+          "value": "Beggar",
+          "count": 41,
+          "share": 4.01
+        },
+        {
+          "value": "Chokha",
+          "count": 40,
+          "share": 3.91
+        },
+        {
+          "value": "Vest",
+          "count": 40,
+          "share": 3.91
+        },
+        {
+          "value": "Karamba",
+          "count": 40,
+          "share": 3.91
+        },
+        {
+          "value": "Rastaman",
+          "count": 39,
+          "share": 3.82
+        },
+        {
+          "value": "Zookeeper",
+          "count": 35,
+          "share": 3.42
+        },
+        {
+          "value": "Khaki",
+          "count": 33,
+          "share": 3.23
+        },
+        {
+          "value": "Prison",
+          "count": 32,
+          "share": 3.13
+        },
+        {
+          "value": "Officer",
+          "count": 30,
+          "share": 2.94
+        },
+        {
+          "value": "Knight",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "Rescue",
+          "count": 28,
+          "share": 2.74
+        },
+        {
+          "value": "Syutkin",
+          "count": 27,
+          "share": 2.64
+        },
+        {
+          "value": "Sheldon",
+          "count": 22,
+          "share": 2.15
+        },
+        {
+          "value": "Spaceman",
+          "count": 22,
+          "share": 2.15
+        },
+        {
+          "value": "Dress",
+          "count": 18,
+          "share": 1.76
+        },
+        {
+          "value": "Kangaroo",
+          "count": 11,
+          "share": 1.08
+        },
+        {
+          "value": "Cloak",
+          "count": 10,
+          "share": 0.98
+        },
+        {
+          "value": "General",
+          "count": 10,
+          "share": 0.98
+        },
+        {
+          "value": "Smile",
+          "count": 10,
+          "share": 0.98
+        },
+        {
+          "value": "Vampire",
+          "count": 9,
+          "share": 0.88
+        },
+        {
+          "value": "MacLeod",
+          "count": 5,
+          "share": 0.49
+        }
+      ]
+    },
+    "Hands": {
+      "count": 1000,
+      "values": [
+        {
+          "value": "Fuck You",
+          "count": 81,
+          "share": 7.93
+        },
+        {
+          "value": "Soda",
+          "count": 70,
+          "share": 6.85
+        },
+        {
+          "value": "Like",
+          "count": 64,
+          "share": 6.26
+        },
+        {
+          "value": "Down",
+          "count": 50,
+          "share": 4.89
+        },
+        {
+          "value": "Musket",
+          "count": 50,
+          "share": 4.89
+        },
+        {
+          "value": "Wellcome",
+          "count": 50,
+          "share": 4.89
+        },
+        {
+          "value": "All Right",
+          "count": 49,
+          "share": 4.79
+        },
+        {
+          "value": "Rave",
+          "count": 48,
+          "share": 4.7
+        },
+        {
+          "value": "Brush",
+          "count": 48,
+          "share": 4.7
+        },
+        {
+          "value": "Sandwich",
+          "count": 47,
+          "share": 4.6
+        },
+        {
+          "value": "BlaBlaBla",
+          "count": 43,
+          "share": 4.21
+        },
+        {
+          "value": "Egypt",
+          "count": 43,
+          "share": 4.21
+        },
+        {
+          "value": "Sword",
+          "count": 38,
+          "share": 3.72
+        },
+        {
+          "value": "Coke",
+          "count": 38,
+          "share": 3.72
+        },
+        {
+          "value": "Truncheon",
+          "count": 33,
+          "share": 3.23
+        },
+        {
+          "value": "Pump Box",
+          "count": 30,
+          "share": 2.94
+        },
+        {
+          "value": "Vodka",
+          "count": 27,
+          "share": 2.64
+        },
+        {
+          "value": "Sexy",
+          "count": 27,
+          "share": 2.64
+        },
+        {
+          "value": "Guitar",
+          "count": 24,
+          "share": 2.35
+        },
+        {
+          "value": "Stones",
+          "count": 22,
+          "share": 2.15
+        },
+        {
+          "value": "Scourge",
+          "count": 21,
+          "share": 2.05
+        },
+        {
+          "value": "Pirate Flag",
+          "count": 18,
+          "share": 1.76
+        },
+        {
+          "value": "Rocket",
+          "count": 16,
+          "share": 1.57
+        },
+        {
+          "value": "Fire",
+          "count": 15,
+          "share": 1.47
+        },
+        {
+          "value": "Banana",
+          "count": 12,
+          "share": 1.17
+        },
+        {
+          "value": "Planet",
+          "count": 10,
+          "share": 0.98
+        },
+        {
+          "value": "Love",
+          "count": 7,
+          "share": 0.68
+        },
+        {
+          "value": "Mask",
+          "count": 7,
+          "share": 0.68
+        },
+        {
+          "value": "Airplane",
+          "count": 6,
+          "share": 0.59
+        },
+        {
+          "value": "Red Book",
+          "count": 6,
+          "share": 0.59
+        }
+      ]
+    },
+    "Attribute": {
+      "count": 1000,
+      "values": [
+        {
+          "value": "BOLT Money",
+          "count": 136,
+          "share": 13.31
+        },
+        {
+          "value": "None",
+          "count": 132,
+          "share": 12.92
+        },
+        {
+          "value": "SHIB Condom",
+          "count": 115,
+          "share": 11.25
+        },
+        {
+          "value": "DOGE Condom",
+          "count": 107,
+          "share": 10.47
+        },
+        {
+          "value": "SOL Condom",
+          "count": 100,
+          "share": 9.78
+        },
+        {
+          "value": "TRX Condom",
+          "count": 99,
+          "share": 9.69
+        },
+        {
+          "value": "DOT Money",
+          "count": 89,
+          "share": 8.71
+        },
+        {
+          "value": "TON Money",
+          "count": 88,
+          "share": 8.61
+        },
+        {
+          "value": "ETH Money",
+          "count": 47,
+          "share": 4.6
+        },
+        {
+          "value": "BNB Money",
+          "count": 44,
+          "share": 4.31
+        },
+        {
+          "value": "BTC Money",
+          "count": 43,
+          "share": 4.21
+        }
+      ]
+    },
+    "Face": {
+      "count": 1000,
+      "values": [
+        {
+          "value": "Nauseous",
+          "count": 95,
+          "share": 9.3
+        },
+        {
+          "value": "Proud",
+          "count": 80,
+          "share": 7.83
+        },
+        {
+          "value": "Playful",
+          "count": 74,
+          "share": 7.24
+        },
+        {
+          "value": "Angry",
+          "count": 71,
+          "share": 6.95
+        },
+        {
+          "value": "Drunk",
+          "count": 70,
+          "share": 6.85
+        },
+        {
+          "value": "Sad",
+          "count": 68,
+          "share": 6.65
+        },
+        {
+          "value": "Strong",
+          "count": 53,
+          "share": 5.19
+        },
+        {
+          "value": "Confusion",
+          "count": 48,
+          "share": 4.7
+        },
+        {
+          "value": "Pleading",
+          "count": 47,
+          "share": 4.6
+        },
+        {
+          "value": "Cunning",
+          "count": 41,
+          "share": 4.01
+        },
+        {
+          "value": "Bored",
+          "count": 38,
+          "share": 3.72
+        },
+        {
+          "value": "Surprised",
+          "count": 35,
+          "share": 3.42
+        },
+        {
+          "value": "Nerdy",
+          "count": 34,
+          "share": 3.33
+        },
+        {
+          "value": "Eager",
+          "count": 33,
+          "share": 3.23
+        },
+        {
+          "value": "Bold",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "Pirate",
+          "count": 28,
+          "share": 2.74
+        },
+        {
+          "value": "Black Glasses",
+          "count": 24,
+          "share": 2.35
+        },
+        {
+          "value": "Lady",
+          "count": 24,
+          "share": 2.35
+        },
+        {
+          "value": "Tongue Out",
+          "count": 23,
+          "share": 2.25
+        },
+        {
+          "value": "Brooding Eyes",
+          "count": 21,
+          "share": 2.05
+        },
+        {
+          "value": "Red",
+          "count": 19,
+          "share": 1.86
+        },
+        {
+          "value": "Golden Eye",
+          "count": 14,
+          "share": 1.37
+        },
+        {
+          "value": "Soul",
+          "count": 13,
+          "share": 1.27
+        },
+        {
+          "value": "NeMorgenshtern",
+          "count": 11,
+          "share": 1.08
+        },
+        {
+          "value": "Pixel",
+          "count": 7,
+          "share": 0.68
+        }
+      ]
+    },
+    "Head": {
+      "count": 1000,
+      "values": [
+        {
+          "value": "Cap",
+          "count": 58,
+          "share": 5.68
+        },
+        {
+          "value": "Elfo",
+          "count": 54,
+          "share": 5.28
+        },
+        {
+          "value": "None",
+          "count": 52,
+          "share": 5.09
+        },
+        {
+          "value": "Purple World",
+          "count": 50,
+          "share": 4.89
+        },
+        {
+          "value": "Condom",
+          "count": 47,
+          "share": 4.6
+        },
+        {
+          "value": "Gentleman",
+          "count": 44,
+          "share": 4.31
+        },
+        {
+          "value": "Feather",
+          "count": 43,
+          "share": 4.21
+        },
+        {
+          "value": "Anonymous",
+          "count": 42,
+          "share": 4.11
+        },
+        {
+          "value": "Wonderland",
+          "count": 41,
+          "share": 4.01
+        },
+        {
+          "value": "Turban",
+          "count": 39,
+          "share": 3.82
+        },
+        {
+          "value": "Rasta",
+          "count": 38,
+          "share": 3.72
+        },
+        {
+          "value": "Ushanka",
+          "count": 37,
+          "share": 3.62
+        },
+        {
+          "value": "Pickpocket",
+          "count": 36,
+          "share": 3.52
+        },
+        {
+          "value": "Junge",
+          "count": 36,
+          "share": 3.52
+        },
+        {
+          "value": "Tricorne",
+          "count": 35,
+          "share": 3.42
+        },
+        {
+          "value": "Crossword",
+          "count": 34,
+          "share": 3.33
+        },
+        {
+          "value": "Medicine",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "NeNelson",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "Pilot",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "Fuck",
+          "count": 29,
+          "share": 2.84
+        },
+        {
+          "value": "Yarmulke",
+          "count": 27,
+          "share": 2.64
+        },
+        {
+          "value": "Sleep",
+          "count": 25,
+          "share": 2.45
+        },
+        {
+          "value": "Cock",
+          "count": 25,
+          "share": 2.45
+        },
+        {
+          "value": "Birthday",
+          "count": 23,
+          "share": 2.25
+        },
+        {
+          "value": "Magic",
+          "count": 20,
+          "share": 1.96
+        },
+        {
+          "value": "Fedya",
+          "count": 14,
+          "share": 1.37
+        },
+        {
+          "value": "Bag",
+          "count": 14,
+          "share": 1.37
+        },
+        {
+          "value": "Police",
+          "count": 14,
+          "share": 1.37
+        },
+        {
+          "value": "Helmet",
+          "count": 12,
+          "share": 1.17
+        },
+        {
+          "value": "Microphone",
+          "count": 12,
+          "share": 1.17
+        },
+        {
+          "value": "Wolf Ears",
+          "count": 12,
+          "share": 1.17
+        }
+      ]
+    }
+  },
+  "generatedAt": "2026-09-18T16:45:13Z",
+  "source": "tonapi.io/v2 items metadata (traits are immutable on-chain)"
+}

@@ -62,4 +62,14 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/guide.html?lang=ru"/>
   </url>
 
+  <url>
+    <loc>https://thewayofdhd.github.io/rarity.html</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/rarity.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/rarity.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/rarity.html?lang=ru"/>
+  </url>
+
 </urlset>
