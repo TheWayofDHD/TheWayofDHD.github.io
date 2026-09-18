@@ -15,8 +15,8 @@
   var PLAYER_X = 44;
   var PLAYER_W = 32;
   var PLAYER_H = 71;
-  var GRAVITY = 880;
-  var JUMP_VY = -300;
+  var GRAVITY = 1180;
+  var JUMP_VY = -375;
   var SPEED_START = 130;
   var SPEED_MAX = 300;
   var NIGHT_EVERY = 350; // score points per day/night flip
@@ -243,9 +243,6 @@
         ctx.fillRect(Math.round(o.x), o.y + o.h - 2, o.w, 2);
         ctx.fillRect(Math.round(o.x) + o.w - 2, o.y, 2, o.h);
         for (var i = 1; i <= 6; i++) ctx.fillRect(Math.round(o.x) + 3, o.y + 8 + i * 3, o.w - 6, 2);
-        ctx.font = '8px "Press Start 2P", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('FOMO', Math.round(o.x) + o.w / 2, o.y + 7);
       } else if (o.type === 'airdrop') {
         ctx.drawImage(S.ghost, Math.round(o.x), o.y, o.w, o.h);
       } else if (o.type === 'pit') {
@@ -269,8 +266,8 @@
     });
     ctx.globalAlpha = 1;
 
-    // player with a light run bob
-    var bob = (Math.floor(frames / 6) % 2 === 0) ? 0 : 1;
+    // player with a light run bob (grounded only)
+    var bob = (playerY === 0 && Math.floor(frames / 6) % 2 === 0) ? 1 : 0;
     var blink = now < invulnUntil && Math.floor(now / 90) % 2 === 0;
     if (!blink) {
       ctx.drawImage(S.hchkGame, PLAYER_X, GROUND_Y - PLAYER_H - playerY + bob);
