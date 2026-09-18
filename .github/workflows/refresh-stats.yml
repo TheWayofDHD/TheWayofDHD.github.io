@@ -22,7 +22,17 @@ jobs:
           python-version: '3.11'
 
       - name: Rebuild collection-stats.json from TON API
-        run: python scripts/build_collection_stats.py --all
+        run: python scripts/build_collection_stats.py --all --require-complete
+
+      - name: Sanity-check the snapshot (must include all 1022 items and Exclusive)
+        run: |
+          python - <<'PY'
+          import json
+          d = json.load(open('data/collection-stats.json', encoding='utf-8'))
+          assert d.get('complete') is True, f"incomplete scan: {d.get('scannedItems')}/{d.get('totalSupply')}"
+          assert 'Exclusive' in d.get('types', {}), 'Exclusive type missing — partial scan'
+          print('snapshot OK:', d['scannedItems'], 'items, types:', list(d['types']))
+          PY
 
       - name: Commit the snapshot if it changed
         run: |

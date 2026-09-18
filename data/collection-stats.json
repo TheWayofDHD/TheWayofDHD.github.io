@@ -1,20 +1,26 @@
 {
   "collection": "EQDzvSAKspPnYIhuqZe0_dMfrEEUlwKVzb4dJo0sRoxZwRZe",
   "collectionName": "The way of DHD",
-  "scannedItems": 1000,
-  "complete": false,
+  "scannedItems": 1022,
+  "complete": true,
   "totalSupply": 1022,
-  "ownersOnChain": 652,
-  "listedCount": 245,
+  "ownersOnChain": 658,
+  "listedCount": 249,
   "floorPrice": 1.0,
   "floorCurrency": "TON",
   "floorMarket": "Getgems Sales",
   "types": {
     "Epic": {
-      "count": 999,
-      "share": 97.75,
+      "count": 1000,
+      "share": 97.85,
       "listed": 244,
       "floor": 1.0
+    },
+    "Exclusive": {
+      "count": 21,
+      "share": 2.05,
+      "listed": 4,
+      "floor": 100.0
     },
     "Diamond": {
       "count": 1,
@@ -25,7 +31,7 @@
   },
   "markets": {
     "Disintar Marketplace": 165,
-    "Getgems Sales": 73,
+    "Getgems Sales": 77,
     "Getgems Marketplace": 2,
     "Marketapp Marketplace": 1,
     "unknown": 3,
@@ -104,6 +110,6 @@
       "market": "Getgems Sales"
     }
   ],
-  "generatedAt": "2026-09-18T11:10:05Z",
+  "generatedAt": "2026-09-18T15:30:29Z",
   "source": "tonapi.io/v2 items with sale field (floor = min listed price)"
 }
