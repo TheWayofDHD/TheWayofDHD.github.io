@@ -8,9 +8,9 @@
 
   function draw() {
     var canvas = document.getElementById('game-preview');
-    if (!canvas || !window.DHDSprites) return;
+    if (!canvas || !window.DHDSprites || !window.DHDSprites.day) return;
     var ctx = canvas.getContext('2d');
-    var S = window.DHDSprites.baked;
+    var S = window.DHDSprites.day;
 
     ctx.imageSmoothingEnabled = false;
     ctx.fillStyle = '#f4f4f2';

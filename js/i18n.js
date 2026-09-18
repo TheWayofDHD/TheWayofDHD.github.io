@@ -609,7 +609,6 @@
 
   var v2Layer2 = {
     en: {
-      'paper-teaser-tag': '1 of 1',
       'paper-teaser-title': 'The Dickpaper',
       'paper-teaser-text': 'The Dickpaper is the only Diamond token of the collection and the heaviest file we host. It is meant to be zoomed: collectors look for hidden clues, jokes and references inside the artwork. The page loads it with a progress indicator and a zoom-and-pan viewer.',
       'paper-teaser-cta': 'Open the Dickpaper viewer',
@@ -648,7 +647,6 @@
 
   var v2Layer2b = {
     ru: {
-      'paper-teaser-tag': '1 из 1',
       'paper-teaser-title': 'Dickpaper',
       'paper-teaser-text': 'Dickpaper — единственный Diamond коллекции и самый тяжёлый файл, который мы хостим. Его нужно рассматривать: коллекционеры ищут внутри скрытые подсказки, шутки и отсылки. Страница показывает прогресс загрузки и даёт приближение с перетаскиванием.',
       'paper-teaser-cta': 'Открыть просмотр Dickpaper',
