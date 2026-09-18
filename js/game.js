@@ -1,217 +1,491 @@
 /* ============================================
    The Way of DHD — game.js
-   DHD ASCII Runner: 5-lane dodge & collect.
-   Pure DOM/pre, localStorage best score,
-   keyboard + tap-zone controls.
+   DHD Pixel Runner (Chrome-Dino style):
+   horizontal canvas runner, pixel sprites
+   defined in code, hearts, TON counter,
+   localStorage best, share button.
    ============================================ */
 
 (function () {
   'use strict';
 
-  var COLS = 5;            // playfield lanes
-  var ROWS = 16;           // scrolling rows above the player line
-  var TICK_MS_START = 170;
-  var TICK_MS_MIN = 85;
-  var SCORE_PER_TON = 25;
+  var W = 320;          // logical canvas width (1px = 1 sprite px)
+  var H = 100;
+  var GROUND_Y = 88;    // top of the ground line
+  var PLAYER_X = 26;
+  var PLAYER_W = 14;
+  var PLAYER_H = 18;
+  var GRAVITY = 560;    // px / s^2
+  var JUMP_VY = -200;   // px / s
+  var SPEED_START = 92; // px / s
+  var SPEED_MAX = 250;
+  var BEST_KEY = 'dhd-runner-best';
 
-  var screen = document.getElementById('game-screen');
+  var canvas = document.getElementById('game-canvas');
   var scoreEl = document.getElementById('game-score');
-  var bestEl = document.getElementById('game-best');
+  var tonEl = document.getElementById('game-ton');
+  var heartsEl = document.getElementById('game-hearts');
   var statusEl = document.getElementById('game-status');
   var shareBtn = document.getElementById('game-share');
 
-  if (!screen) return;
-
-  var BEST_KEY = 'dhd-runner-best';
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
 
   function t(key, fallback) {
     return typeof window.dhdT === 'function' ? window.dhdT(key) : fallback;
   }
 
-  var state = 'menu'; // menu | run | over
-  var playerCol = 2;
-  var lane = [];      // lane[row][col]: '.' empty, 'X' scam, 'O' ton
-  var score = 0;
-  var tickTimer = null;
-  var tickMs = TICK_MS_START;
-  var ticks = 0;
-  var spawnEvery = 3;
-  var best = 0;
+  /* ---------- palette ---------- */
+  var P = {
+    k: '#1b1d22',
+    r: '#e04848',
+    y: '#f2dfb4',
+    w: '#ffffff',
+    b: '#3aa9e0',
+    g: '#b9bec4',
+    d: '#55595f'
+  };
 
-  try { best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) {}
-
-  function pad(n) {
-    return String(Math.max(0, Math.min(999999, n))).padStart(6, '0');
-  }
-
-  function renderHud() {
-    if (scoreEl) scoreEl.textContent = 'SCORE ' + pad(score);
-    if (bestEl) bestEl.textContent = 'BEST ' + pad(best);
-  }
-
-  function emptyLane() {
-    var rows = [];
-    for (var r = 0; r < ROWS; r++) {
-      var row = [];
-      for (var c = 0; c < COLS; c++) row.push('.');
-      rows.push(row);
+  /* ---------- sprites (pixel maps, '.' = transparent) ---------- */
+  var SPRITES = {
+    // DHD runner, two stride frames
+    dhdA: {
+      c: 16,
+      rows: [
+        '.....kkkkkk.....',
+        '....kkkkkkkk....',
+        '....kkkkkkkk....',
+        '...yyyyyyyy.....',
+        '...ykkyykky.....',
+        '...yyyyyyyy.....',
+        '....yyyyyy......',
+        '..kkkkkkkkkk....',
+        '..kkywwwwykk....',
+        '..kkywkkwykk....',
+        '..kkkkkkkkkk....',
+        '..krrrrrrrrk....',
+        '..kkkkkkkkkk....',
+        '...kkkk.kkkk....',
+        '...kkk...kkk....',
+        '...kkk...kkk....',
+        '..rrrr...rrrr...',
+        '..rrrr...rrrr...'
+      ]
+    },
+    dhdB: {
+      c: 16,
+      rows: [
+        '.....kkkkkk.....',
+        '....kkkkkkkk....',
+        '....kkkkkkkk....',
+        '...yyyyyyyy.....',
+        '...ykkyykky.....',
+        '...yyyyyyyy.....',
+        '....yyyyyy......',
+        '..kkkkkkkkkk....',
+        '..kkywwwwykk....',
+        '..kkywkkwykk....',
+        '..kkkkkkkkkk....',
+        '..krrrrrrrrk....',
+        '..kkkkkkkkkk....',
+        '....kkkkkk......',
+        '....kkkk........',
+        '.....kkk........',
+        '....rrrr........',
+        '...rrrr.........'
+      ]
+    },
+    ton: {
+      c: 10,
+      rows: [
+        '..kkkkkk..',
+        '.kbbbbbbk.',
+        'kbbbwwbbbk',
+        'kbwwwwwwbk',
+        'kbwwwwwwbk',
+        'kbbbwwbbbk',
+        '.kbbbbbbk.',
+        '..kkkkkk..'
+      ]
+    },
+    cactus: {
+      c: 8,
+      rows: [
+        '...kk...',
+        '...kk...',
+        '...kk.k.',
+        'k..kk.k.',
+        'k..kk.k.',
+        'k..kkkkk',
+        'kkkkk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...'
+      ]
+    },
+    cloud: {
+      c: 16,
+      rows: [
+        '.....ggggg......',
+        '...ggggggggg....',
+        '..gggggggggggg..',
+        'gggggggggggggggg',
+        '.gggggggggggggg.'
+      ]
+    },
+    heart: {
+      c: 7,
+      rows: [
+        '.kk.kk.',
+        'kkkkkkk',
+        'kkkkkkk',
+        '.kkkkk.',
+        '..kkk..',
+        '...k...'
+      ]
+    },
+    ghost: {
+      c: 12,
+      rows: [
+        '...kkkkkk...',
+        '..kkkkkkkk..',
+        '.kkkkkkkkkk.',
+        '.kkwkkkkwkk.',
+        '.kkkkkkkkkk.',
+        '.kkkkkkkkkk.',
+        '.kkkkkkkkkk.',
+        '.kkkkkkkkkk.',
+        '.kk.kkkk.kk.',
+        '..k..kk..k..'
+      ]
     }
-    return rows;
-  }
+  };
 
-  function reset() {
-    lane = emptyLane();
-    playerCol = Math.floor(COLS / 2);
-    score = 0;
-    ticks = 0;
-    tickMs = TICK_MS_START;
-    spawnEvery = 3;
-  }
-
-  function draw(frameText) {
-    var out = [];
-    out.push('+' + new Array(COLS * 2 + 2).join('-') + '+');
-    for (var r = 0; r < ROWS; r++) {
-      var line = '';
-      for (var c = 0; c < COLS; c++) line += lane[r][c] === '.' ? ' .' : lane[r][c] + ' ';
-      out.push('| ' + line + '|');
-    }
-    var playerLine = '';
-    for (var c2 = 0; c2 < COLS; c2++) playerLine += (c2 === playerCol ? 'D ' : ' .');
-    out.push('| ' + playerLine + '|');
-    out.push('+' + new Array(COLS * 2 + 2).join('-') + '+');
-    screen.textContent = out.join('\n') + (frameText ? '\n' + frameText : '');
-  }
-
-  function spawnRow() {
-    var row = [];
-    for (var c = 0; c < COLS; c++) row.push('.');
-    // at most one obstacle and at most one ton per spawned row
-    var scamCol = Math.random() < 0.75 ? Math.floor(Math.random() * COLS) : -1;
-    var tonCol = -1;
-    if (scamCol === -1 || Math.random() < 0.45) {
-      do { tonCol = Math.floor(Math.random() * COLS); } while (tonCol === scamCol);
-    }
-    if (scamCol >= 0) row[scamCol] = 'X';
-    if (tonCol >= 0) row[tonCol] = 'O';
-    return row;
-  }
-
-  function tick() {
-    ticks += 1;
-    // move everything down; check the player line
-    for (var r = ROWS - 1; r >= 0; r--) {
-      for (var c = 0; c < COLS; c++) {
-        var cell = lane[r][c];
-        if (cell === '.') continue;
-        if (r + 1 >= ROWS) {
-          // reached the player line
-          if (cell === 'X' && c === playerCol) return gameOver();
-          if (cell === 'O' && c === playerCol) score += SCORE_PER_TON;
-          lane[r][c] = '.';
-        } else {
-          lane[r + 1][c] = cell;
-          lane[r][c] = '.';
+  function bakeSprite(def) {
+    var w = def.c;
+    var h = def.rows.length;
+    var c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    var g = c.getContext('2d');
+    for (var r = 0; r < h; r++) {
+      var row = def.rows[r];
+      for (var x = 0; x < w; x++) {
+        var ch = row[x];
+        if (ch && ch !== '.' && P[ch]) {
+          g.fillStyle = P[ch];
+          g.fillRect(x, r, 1, 1);
         }
       }
     }
-    if (ticks % spawnEvery === 0) {
-      lane[0] = spawnRow();
-    }
-    // ramp difficulty every 12 ticks
-    if (ticks % 12 === 0 && tickMs > TICK_MS_MIN) {
-      tickMs = Math.max(TICK_MS_MIN, tickMs - 6);
-      if (spawnEvery > 2 && ticks % 48 === 0) spawnEvery = 2;
-    }
-    score += 1; // survival points
-    renderHud();
-    draw('');
-    schedule();
+    return c;
   }
 
-  function schedule() {
-    tickTimer = setTimeout(tick, tickMs);
+  var BAKED = {};
+  Object.keys(SPRITES).forEach(function (name) {
+    BAKED[name] = bakeSprite(SPRITES[name]);
+  });
+
+  /* ---------- state ---------- */
+  var state = 'menu'; // menu | run | over
+  var playerY = 0;    // 0 = on ground, negative = in the air
+  var vy = 0;
+  var speed = SPEED_START;
+  var dist = 0;
+  var score = 0;
+  var tons = 0;
+  var hearts = 3;
+  var invulnUntil = 0;
+  var obstacles = [];
+  var clouds = [];
+  var nextSpawnDist = 200;
+  var best = 0;
+  var lastTs = 0;
+  var raf = null;
+  var running = false;
+
+  try { best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) {}
+
+  function pad(n) { return String(Math.max(0, Math.min(999999, Math.floor(n)))).padStart(6, '0'); }
+  function pad4(n) { return String(Math.max(0, Math.min(9999, Math.floor(n)))).padStart(4, '0'); }
+
+  function renderHud() {
+    if (scoreEl) scoreEl.textContent = 'SCORE ' + pad(score);
+    if (tonEl) tonEl.textContent = 'TON ' + pad4(tons);
+    if (heartsEl) {
+      var h = '';
+      for (var i = 0; i < 3; i++) h += i < hearts ? '\u2665' : '\u2661';
+      heartsEl.textContent = h;
+    }
+  }
+
+  function reset() {
+    playerY = 0; vy = 0; speed = SPEED_START; dist = 0; score = 0; tons = 0;
+    hearts = 3; invulnUntil = 0; obstacles = []; nextSpawnDist = 240;
+    clouds = [
+      { x: 90, y: 22 }, { x: 190, y: 38 }, { x: 280, y: 16 }
+    ];
+  }
+
+  /* ---------- spawning ---------- */
+  function spawn() {
+    var types = ['scam', 'cactus', 'fomo', 'airdrop', 'pit', 'ton', 'ton'];
+    var type = types[Math.floor(Math.random() * types.length)];
+    var ob = { type: type, x: W + 12 };
+    if (type === 'scam') { ob.w = 26; ob.h = 20; ob.y = GROUND_Y - 20; }
+    if (type === 'cactus') { ob.w = 10; ob.h = 15; ob.y = GROUND_Y - 15; }
+    if (type === 'fomo') { ob.w = 15; ob.h = 17; ob.y = GROUND_Y - 17; }
+    if (type === 'airdrop') { ob.w = 13; ob.h = 11; ob.y = GROUND_Y - 42; }
+    if (type === 'pit') { ob.w = 42; ob.h = 8; ob.y = GROUND_Y; }
+    if (type === 'ton') { ob.w = 10; ob.h = 8; ob.y = GROUND_Y - (Math.random() < 0.5 ? 12 : 34); }
+    obstacles.push(ob);
+  }
+
+  function maybeSpawn() {
+    if (dist >= nextSpawnDist) {
+      spawn();
+      // fair gap: enough room to land and jump again at the current speed
+      nextSpawnDist = dist + speed * 0.8 + 60 + Math.random() * 140;
+    }
+  }
+
+  /* ---------- collisions ---------- */
+  function playerBox() {
+    return { x: PLAYER_X + 2, y: GROUND_Y - PLAYER_H - playerY, w: PLAYER_W - 3, h: PLAYER_H };
+  }
+
+  function hitTest(ob) {
+    var p = playerBox();
+    if (ob.type === 'pit') {
+      // a pit hurts only when you are on the ground above it
+      if (playerY > 1) return false;
+      return p.x + p.w > ob.x + 4 && p.x < ob.x + ob.w - 4;
+    }
+    return p.x < ob.x + ob.w && p.x + p.w > ob.x &&
+      p.y < ob.y + ob.h && p.y + p.h > ob.y;
+  }
+
+  /* ---------- drawing ---------- */
+  function drawSprite(name, x, y) {
+    ctx.drawImage(BAKED[name], Math.round(x), Math.round(y));
+  }
+
+  function drawLabel(text, x, y) {
+    ctx.fillStyle = P.k;
+    ctx.font = '6px "Press Start 2P", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(text, x, y);
+  }
+
+  function drawBoard(x, y, w, h, text) {
+    ctx.fillStyle = P.w;
+    ctx.fillRect(x, y, w, h);
+    ctx.fillStyle = P.k;
+    ctx.fillRect(x, y, w, 1); ctx.fillRect(x, y + h - 1, w, 1);
+    ctx.fillRect(x, y, 1, h); ctx.fillRect(x + w - 1, y, 1, h);
+    ctx.font = '5px "Press Start 2P", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(text, x + w / 2, y + h / 2 + 2);
+  }
+
+  function render(now) {
+    ctx.fillStyle = '#f4f4f2';
+    ctx.fillRect(0, 0, W, H);
+
+    // clouds
+    clouds.forEach(function (c) {
+      ctx.globalAlpha = 0.55;
+      ctx.drawImage(BAKED.cloud, Math.round(c.x), c.y);
+      ctx.globalAlpha = 1;
+    });
+
+    // ground with pits carved out
+    var pits = obstacles.filter(function (o) { return o.type === 'pit'; });
+    var segs = [[0, W]];
+    pits.forEach(function (p) {
+      segs = segs.map(function (s) {
+        if (p.x + p.w < s[0] || p.x > s[1]) return [s];
+        var out = [];
+        if (p.x > s[0]) out.push([s[0], p.x]);
+        if (p.x + p.w < s[1]) out.push([p.x + p.w, s[1]]);
+        return out;
+      }).reduce(function (a, b) { return a.concat(b); }, []);
+    });
+    ctx.fillStyle = P.k;
+    segs.forEach(function (s) { ctx.fillRect(s[0], GROUND_Y, s[1] - s[0], 2); });
+
+    // obstacles
+    obstacles.forEach(function (o) {
+      if (o.type === 'scam') {
+        ctx.fillStyle = P.k;
+        ctx.fillRect(Math.round(o.x) + 12, o.y + 10, 2, 10); // post
+        drawBoard(Math.round(o.x), o.y - 4, 26, 10, 'SCAM');
+      } else if (o.type === 'fomo') {
+        ctx.fillStyle = P.w;
+        ctx.fillRect(Math.round(o.x), o.y, o.w, o.h);
+        ctx.fillStyle = P.k;
+        ctx.fillRect(Math.round(o.x), o.y, o.w, 1);
+        ctx.fillRect(Math.round(o.x), o.y + o.h - 1, o.w, 1);
+        for (var i = 1; i <= 4; i++) ctx.fillRect(Math.round(o.x) + 2, o.y + 4 + i * 2, o.w - 4, 1);
+        drawLabel('FOMO', Math.round(o.x) + o.w / 2, o.y + 3);
+      } else if (o.type === 'airdrop') {
+        drawSprite('ghost', o.x, o.y);
+        drawLabel('FAKE', Math.round(o.x) + o.w / 2, o.y - 4);
+      } else if (o.type === 'pit') {
+        ctx.fillStyle = P.k;
+        ctx.fillRect(Math.round(o.x), GROUND_Y, o.w, H - GROUND_Y);
+        // spikes
+        for (var sx = 0; sx < o.w - 3; sx += 5) {
+          ctx.fillRect(Math.round(o.x) + sx, GROUND_Y + 6, 2, 3);
+          ctx.fillRect(Math.round(o.x) + sx + 2, GROUND_Y + 9, 2, 3);
+        }
+        drawBoard(Math.round(o.x) - 4, GROUND_Y - 12, o.w + 8, 9, 'RUG PULL');
+      } else if (o.type === 'ton') {
+        drawSprite('ton', o.x, o.y);
+      } else if (o.type === 'cactus') {
+        drawSprite('cactus', o.x, o.y);
+      }
+    });
+
+    // player (blink while invulnerable)
+    var blink = now < invulnUntil && Math.floor(now / 90) % 2 === 0;
+    if (!blink) {
+      var frame = (Math.floor(now / 110) % 2 === 0) ? 'dhdA' : 'dhdB';
+      if (state !== 'run') frame = 'dhdA';
+      drawSprite(frame, PLAYER_X, GROUND_Y - PLAYER_H - playerY);
+    }
+  }
+
+  /* ---------- loop ---------- */
+  function loop(ts) {
+    if (state !== 'run') return;
+    var dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
+    lastTs = ts;
+
+    // physics
+    if (playerY > 0 || vy < 0) {
+      vy += GRAVITY * dt;
+      playerY -= vy * dt;
+      if (playerY <= 0) { playerY = 0; vy = 0; }
+    }
+
+    speed = Math.min(SPEED_MAX, SPEED_START + dist * 0.04);
+    var dx = speed * dt;
+    dist += dx;
+    score = Math.floor(dist / 8);
+
+    clouds.forEach(function (c) {
+      c.x -= dx * 0.25;
+      if (c.x < -18) { c.x = W + 10; c.y = 12 + Math.floor(Math.random() * 30); }
+    });
+
+    obstacles.forEach(function (o) { o.x -= dx; });
+    obstacles = obstacles.filter(function (o) { return o.x + o.w > -10; });
+    maybeSpawn();
+
+    // collisions & pickups
+    var now = ts;
+    for (var i = obstacles.length - 1; i >= 0; i--) {
+      var ob = obstacles[i];
+      if (ob.type === 'ton' && hitTest(ob)) {
+        tons += 1;
+        score += 15;
+        obstacles.splice(i, 1);
+        continue;
+      }
+      if (ob.type !== 'ton' && now > invulnUntil && hitTest(ob)) {
+        hearts -= 1;
+        invulnUntil = now + 1300;
+        if (ob.type === 'pit') {
+          // keep the pit under the player but let them jump out: nudge it left
+          ob.x -= ob.w + 30;
+        }
+        renderHud();
+        if (hearts <= 0) { gameOver(now); return; }
+      }
+    }
+
+    render(now);
+    renderHud();
+    raf = requestAnimationFrame(loop);
   }
 
   function start() {
-    if (tickTimer) clearTimeout(tickTimer);
-    reset();
     state = 'run';
+    reset();
     if (shareBtn) shareBtn.style.display = 'none';
-    if (statusEl) statusEl.textContent = t('game-status-run', 'RUN! ◈ = TON, X = scam');
+    if (statusEl) statusEl.textContent = t('game-status-run', 'SPACE / TAP = jump \u00b7 \u25c7 = TON \u00b7 X = scam');
     renderHud();
-    draw('');
-    schedule();
+    lastTs = 0;
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(loop);
   }
 
-  function gameOver() {
+  function gameOver(now) {
     state = 'over';
-    if (tickTimer) clearTimeout(tickTimer);
-    tickTimer = null;
+    running = false;
+    if (raf) cancelAnimationFrame(raf);
+    render(now);
     if (score > best) {
       best = score;
       try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
     }
     renderHud();
-    draw(t('game-over', 'GAME OVER'));
-    if (statusEl) statusEl.textContent = t('game-status-over', 'Game over — press Space or tap here to run again.');
+    if (statusEl) statusEl.textContent = t('game-status-over', 'Game over — press Space or tap to run again.');
     if (shareBtn) {
-      var text = t('game-share-text', 'I scored {s} in the DHD ASCII Runner — beat me!').replace('{s}', String(score));
+      var text = t('game-share-text', 'My DHD Runner score: {s}, {t} TON collected — beat me!')
+        .replace('{s}', String(score)).replace('{t}', String(tons));
       shareBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent('https://thewayofdhd.github.io/game.html') +
         '&text=' + encodeURIComponent(text);
       shareBtn.style.display = '';
     }
   }
 
-  function moveLeft() {
-    if (state !== 'run') return;
-    playerCol = Math.max(0, playerCol - 1);
-    draw('');
+  function jump() {
+    if (state !== 'run') { start(); return; }
+    if (playerY === 0) { vy = JUMP_VY; playerY = 0.01; }
   }
 
-  function moveRight() {
-    if (state !== 'run') return;
-    playerCol = Math.min(COLS - 1, playerCol + 1);
-    draw('');
-  }
-
-  function primaryAction() {
-    if (state === 'run') return;
-    start();
-  }
-
+  /* ---------- controls ---------- */
   document.addEventListener('keydown', function (event) {
-    if (!screen || !screen.getBoundingClientRect) return;
-    // only react when the game section is on screen to avoid hijacking the page
-    var rect = screen.getBoundingClientRect();
+    if (!canvas) return;
+    var rect = canvas.getBoundingClientRect();
     var visible = rect.top < window.innerHeight * 0.8 && rect.bottom > 80;
     if (!visible) return;
-    switch (event.key) {
-      case 'ArrowLeft': case 'a': case 'A': moveLeft(); event.preventDefault(); break;
-      case 'ArrowRight': case 'd': case 'D': moveRight(); event.preventDefault(); break;
-      case ' ': case 'Enter': primaryAction(); event.preventDefault(); break;
+    if (event.key === ' ' || event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
+      event.preventDefault();
+      jump();
     }
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') event.preventDefault();
   });
 
-  screen.addEventListener('pointerdown', function (event) {
-    var rect = screen.getBoundingClientRect();
-    var x = event.clientX - rect.left;
-    if (state !== 'run') { primaryAction(); return; }
-    if (x < rect.width / 2) moveLeft(); else moveRight();
+  canvas.addEventListener('pointerdown', function (event) {
+    event.preventDefault();
+    jump();
   });
 
   if (statusEl) {
-    statusEl.addEventListener('click', primaryAction);
+    statusEl.addEventListener('click', function () { if (state !== 'run') start(); });
     statusEl.style.cursor = 'pointer';
   }
 
-  // menu screen
+  /* ---------- boot ---------- */
   renderHud();
-  draw(t('game-menu', 'PRESS SPACE / TAP TO RUN'));
+  reset();
+  // static menu frame
+  ctx.fillStyle = '#f4f4f2';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = P.k;
+  ctx.fillRect(0, GROUND_Y, W, 2);
+  drawSprite('dhdA', PLAYER_X, GROUND_Y - PLAYER_H);
+  drawLabel(t('game-menu', 'TAP / SPACE TO START'), W / 2, 34);
+  if (statusEl) statusEl.textContent = t('game-menu', 'TAP / SPACE TO START');
 
-  // refresh localized overlays when the language changes
   window.addEventListener('dhd-langchange', function () {
-    if (state === 'menu') draw(t('game-menu', 'PRESS SPACE / TAP TO RUN'));
-    if (state === 'over') draw(t('game-over', 'GAME OVER'));
+    if (state === 'menu' && statusEl) statusEl.textContent = t('game-menu', 'TAP / SPACE TO START');
   });
 })();

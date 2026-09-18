@@ -130,7 +130,13 @@
     if (!shareBtn) return;
     var r = type === 'Diamond' ? 'Diamond — the Dickpaper' : (item ? item.name : type);
     var text = t('rlt-share-text', 'I spun the ХЧК roulette: {r} — try your luck!').replace('{r}', r);
-    shareBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent('https://thewayofdhd.github.io/') +
+    // Sharing the Getgems page of the won item pulls its artwork into the
+    // Telegram preview via that page's og:image; the Diamond shares the
+    // Dickpaper page, whose og:image is the artwork itself.
+    var url = type === 'Diamond'
+      ? 'https://thewayofdhd.github.io/dickpaper.html'
+      : (item ? GETGEMS_ITEM + item.address : 'https://thewayofdhd.github.io/');
+    shareBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent(url) +
       '&text=' + encodeURIComponent(text);
     shareBtn.style.display = '';
   }

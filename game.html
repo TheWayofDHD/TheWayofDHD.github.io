@@ -32,7 +32,7 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
   <script type="application/ld+json">
@@ -103,8 +103,8 @@
 
   <!-- Hero -->
   <section class="page-hero" style="padding-bottom: 30px;">
-    <h1 data-i18n="game-title">DHD ASCII Runner</h1>
-    <p data-i18n="game-lead">Dodge the scammers, collect TON. Arrow keys or A/D on desktop, tap the left/right half of the screen on mobile. The score survives reloads — can you beat your best?</p>
+    <h1 data-i18n="game-title">DHD Pixel Runner</h1>
+    <p data-i18n="game-lead">The Way of DHD goes pixel: dodge SCAM signs, jump over rug pulls, grab TON and watch out for the FAKE AIRDROP ghost. Three hearts. Space or tap to jump.</p>
   </section>
 
   <!-- Game -->
@@ -112,10 +112,13 @@
     <div class="container">
       <div class="game-frame fade-in">
         <div class="game-hud">
-          <span id="game-score">SCORE 000000</span>
-          <span id="game-best">BEST 000000</span>
+          <span class="game-hud-left">DHD <span id="game-hearts">&#9829;&#9829;&#9829;</span></span>
+          <span class="game-hud-right">
+            <span id="game-score">SCORE 000000</span>
+            <span id="game-ton">TON 0000</span>
+          </span>
         </div>
-        <pre class="game-screen" id="game-screen" tabindex="0" aria-label="DHD ASCII Runner playfield"></pre>
+        <canvas id="game-canvas" width="320" height="100"></canvas>
         <div class="game-footer">
           <p class="game-status" id="game-status"></p>
           <a class="btn btn-secondary btn-sm" id="game-share" target="_blank" rel="noopener noreferrer" style="display:none" data-i18n="rlt-share">Share</a>
