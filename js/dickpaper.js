@@ -10,6 +10,9 @@
   var FULL_URL = 'assets/dickpaper.png';
   var MIN_SCALE = 0.5;
   var MAX_SCALE = 8;
+  // How many times past native 1:1 the user may zoom: the tiniest inscriptions
+  // in the artwork are readable only above native resolution.
+  var BEYOND_ACTUAL = 3;
   var STEP = 1.25;
 
   var viewer = document.getElementById('paper-viewer');
@@ -89,7 +92,7 @@
 
   function setScale(next, anchorX, anchorY) {
     var prev = scale;
-    scale = clamp(next, MIN_SCALE, Math.max(MAX_SCALE, actualScale));
+    scale = clamp(next, MIN_SCALE, Math.max(MAX_SCALE, actualScale * BEYOND_ACTUAL));
     if (scale === prev) return;
 
     var rect = viewer.getBoundingClientRect();
