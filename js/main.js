@@ -151,6 +151,54 @@
     }
   }
 
+  // --- $DHD token price (same public TON API, no keys) ---
+  var JETTON = 'EQBCFwW8uFUh-amdRmNY9NyeDEaeDYXd9ggJGsicpqVcHq7B';
+
+  function fmtPrice(value) {
+    return Number(value.toPrecision(3)).toString();
+  }
+
+  function fmtChange(raw) {
+    // tonapi returns e.g. "−3.38%" with a unicode minus — normalize it
+    var n = parseFloat(String(raw).replace(/\u2212|\u2013/g, '-'));
+    return isFinite(n) ? n : null;
+  }
+
+  async function refreshTokenPrice() {
+    var priceEl = document.getElementById('token-price');
+    var changeEl = document.getElementById('token-change');
+    if (!priceEl && !changeEl) return;
+    try {
+      var resp = await fetch(API_BASE + '/rates?tokens=' + JETTON + '&currencies=ton,usd', {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!resp.ok) throw new Error('rates ' + resp.status);
+      var data = await resp.json();
+      var rates = (data.rates || {})[JETTON] || {};
+      var usd = (rates.prices || {}).USD;
+      var ton = (rates.prices || {}).TON;
+      if (priceEl) {
+        if (typeof usd === 'number' && typeof ton === 'number') {
+          priceEl.textContent = '$' + fmtPrice(usd) + ' \u00b7 ' + fmtPrice(ton) + ' TON';
+        } else {
+          priceEl.textContent = '\u2014';
+        }
+      }
+      if (changeEl) {
+        var ch = rates.diff_24h ? fmtChange(rates.diff_24h.USD || rates.diff_24h.TON) : null;
+        if (ch === null) {
+          changeEl.textContent = '\u2014';
+        } else {
+          changeEl.textContent = (ch >= 0 ? '+' : '\u2212') + Math.abs(ch).toFixed(2) + '%';
+          changeEl.classList.add(ch >= 0 ? 'is-up' : 'is-down');
+        }
+      }
+    } catch (err) {
+      console.warn('Token price unavailable:', err.message);
+    }
+  }
+
   // --- init ---
   loadSnapshot().then(refreshLive);
+  refreshTokenPrice();
 })();

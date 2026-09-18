@@ -1099,6 +1099,18 @@ img {
   color: var(--accent);
 }
 
+.token-price {
+  font-family: var(--font-mono);
+  color: var(--white);
+}
+
+.token-change {
+  font-family: var(--font-mono);
+}
+
+.token-change.is-up { color: #22c55e; }
+.token-change.is-down { color: #ef4444; }
+
 .token-contract {
   font-family: var(--font-mono);
   font-size: 0.85rem;
