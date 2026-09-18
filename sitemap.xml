@@ -82,4 +82,14 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/postcard.html?lang=ru"/>
   </url>
 
+  <url>
+    <loc>https://thewayofdhd.github.io/game.html</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/game.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/game.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/game.html?lang=ru"/>
+  </url>
+
 </urlset>
