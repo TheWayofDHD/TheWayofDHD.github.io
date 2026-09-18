@@ -23,6 +23,7 @@
   var resultEl = document.getElementById('rlt-result');
   var statsEl = document.getElementById('rlt-stats');
   var windowEl = document.getElementById('rlt-window');
+  var shareBtn = document.getElementById('rlt-share');
 
   if (!strip || !spinBtn) return;
 
@@ -125,6 +126,15 @@
       ' \u00b7 Diamond ' + counts.Diamond;
   }
 
+  function updateShare(type, item) {
+    if (!shareBtn) return;
+    var r = type === 'Diamond' ? 'Diamond — the Dickpaper' : (item ? item.name : type);
+    var text = t('rlt-share-text', 'I spun the ХЧК roulette: {r} — try your luck!').replace('{r}', r);
+    shareBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent('https://thewayofdhd.github.io/') +
+      '&text=' + encodeURIComponent(text);
+    shareBtn.style.display = '';
+  }
+
   function renderResult(type, item) {
     if (!resultEl) return;
     var label;
@@ -132,11 +142,13 @@
       label = t('rlt-hit-diamond', 'Jackpot: Diamond — the Dickpaper itself!');
       resultEl.innerHTML = label + ' <a href="dickpaper.html">' + escapeHtml(t('nav-dickpaper', 'Dickpaper')) + ' \u2192</a>';
       resultEl.className = 'rlt-result is-diamond';
+      updateShare(type, null);
       return;
     }
     if (!item) {
       resultEl.textContent = type;
       resultEl.className = 'rlt-result';
+      updateShare(type, null);
       return;
     }
     label = type === 'Exclusive'
@@ -145,6 +157,7 @@
     resultEl.className = 'rlt-result is-' + type.toLowerCase();
     resultEl.innerHTML = label + ': ' + escapeHtml(item.name) +
       ' \u00b7 <a href="' + GETGEMS_ITEM + escapeHtml(item.address) + '" target="_blank" rel="noopener noreferrer">Getgems \u2192</a>';
+    updateShare(type, item);
   }
 
   function spin() {

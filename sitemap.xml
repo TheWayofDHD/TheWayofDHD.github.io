@@ -52,4 +52,14 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/why.html?lang=ru"/>
   </url>
 
+  <url>
+    <loc>https://thewayofdhd.github.io/guide.html</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/guide.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/guide.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/guide.html?lang=ru"/>
+  </url>
+
 </urlset>
