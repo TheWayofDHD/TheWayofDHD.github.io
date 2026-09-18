@@ -1,24 +1,24 @@
 /* ============================================
    The Way of DHD — game.js
    DHD Pixel Runner (Chrome-Dino style):
-   horizontal canvas runner, pixel sprites
-   defined in code, hearts, TON counter,
-   localStorage best, share button.
+   horizontal canvas runner. Player sprite =
+   the ХЧК 32x71 matrix, menu screens use the
+   detailed 64x142 version. Sprites: sprites.js.
    ============================================ */
 
 (function () {
   'use strict';
 
-  var W = 320;          // logical canvas width (1px = 1 sprite px)
-  var H = 100;
-  var GROUND_Y = 88;    // top of the ground line
-  var PLAYER_X = 26;
-  var PLAYER_W = 14;
-  var PLAYER_H = 18;
-  var GRAVITY = 560;    // px / s^2
-  var JUMP_VY = -200;   // px / s
-  var SPEED_START = 92; // px / s
-  var SPEED_MAX = 250;
+  var W = 480;
+  var H = 150;
+  var GROUND_Y = 132;
+  var PLAYER_X = 44;
+  var PLAYER_W = 32;
+  var PLAYER_H = 71;
+  var GRAVITY = 880;
+  var JUMP_VY = -300;
+  var SPEED_START = 130;
+  var SPEED_MAX = 300;
   var BEST_KEY = 'dhd-runner-best';
 
   var canvas = document.getElementById('game-canvas');
@@ -28,171 +28,18 @@
   var statusEl = document.getElementById('game-status');
   var shareBtn = document.getElementById('game-share');
 
-  if (!canvas || !canvas.getContext) return;
+  if (!canvas || !canvas.getContext || !window.DHDSprites) return;
   var ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  var S = window.DHDSprites.baked;
 
   function t(key, fallback) {
     return typeof window.dhdT === 'function' ? window.dhdT(key) : fallback;
   }
 
-  /* ---------- palette ---------- */
-  var P = {
-    k: '#1b1d22',
-    r: '#e04848',
-    y: '#f2dfb4',
-    w: '#ffffff',
-    b: '#3aa9e0',
-    g: '#b9bec4',
-    d: '#55595f'
-  };
-
-  /* ---------- sprites (pixel maps, '.' = transparent) ---------- */
-  var SPRITES = {
-    // DHD runner, two stride frames
-    dhdA: {
-      c: 16,
-      rows: [
-        '.....kkkkkk.....',
-        '....kkkkkkkk....',
-        '....kkkkkkkk....',
-        '...yyyyyyyy.....',
-        '...ykkyykky.....',
-        '...yyyyyyyy.....',
-        '....yyyyyy......',
-        '..kkkkkkkkkk....',
-        '..kkywwwwykk....',
-        '..kkywkkwykk....',
-        '..kkkkkkkkkk....',
-        '..krrrrrrrrk....',
-        '..kkkkkkkkkk....',
-        '...kkkk.kkkk....',
-        '...kkk...kkk....',
-        '...kkk...kkk....',
-        '..rrrr...rrrr...',
-        '..rrrr...rrrr...'
-      ]
-    },
-    dhdB: {
-      c: 16,
-      rows: [
-        '.....kkkkkk.....',
-        '....kkkkkkkk....',
-        '....kkkkkkkk....',
-        '...yyyyyyyy.....',
-        '...ykkyykky.....',
-        '...yyyyyyyy.....',
-        '....yyyyyy......',
-        '..kkkkkkkkkk....',
-        '..kkywwwwykk....',
-        '..kkywkkwykk....',
-        '..kkkkkkkkkk....',
-        '..krrrrrrrrk....',
-        '..kkkkkkkkkk....',
-        '....kkkkkk......',
-        '....kkkk........',
-        '.....kkk........',
-        '....rrrr........',
-        '...rrrr.........'
-      ]
-    },
-    ton: {
-      c: 10,
-      rows: [
-        '..kkkkkk..',
-        '.kbbbbbbk.',
-        'kbbbwwbbbk',
-        'kbwwwwwwbk',
-        'kbwwwwwwbk',
-        'kbbbwwbbbk',
-        '.kbbbbbbk.',
-        '..kkkkkk..'
-      ]
-    },
-    cactus: {
-      c: 8,
-      rows: [
-        '...kk...',
-        '...kk...',
-        '...kk.k.',
-        'k..kk.k.',
-        'k..kk.k.',
-        'k..kkkkk',
-        'kkkkk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...'
-      ]
-    },
-    cloud: {
-      c: 16,
-      rows: [
-        '.....ggggg......',
-        '...ggggggggg....',
-        '..gggggggggggg..',
-        'gggggggggggggggg',
-        '.gggggggggggggg.'
-      ]
-    },
-    heart: {
-      c: 7,
-      rows: [
-        '.kk.kk.',
-        'kkkkkkk',
-        'kkkkkkk',
-        '.kkkkk.',
-        '..kkk..',
-        '...k...'
-      ]
-    },
-    ghost: {
-      c: 12,
-      rows: [
-        '...kkkkkk...',
-        '..kkkkkkkk..',
-        '.kkkkkkkkkk.',
-        '.kkwkkkkwkk.',
-        '.kkkkkkkkkk.',
-        '.kkkkkkkkkk.',
-        '.kkkkkkkkkk.',
-        '.kkkkkkkkkk.',
-        '.kk.kkkk.kk.',
-        '..k..kk..k..'
-      ]
-    }
-  };
-
-  function bakeSprite(def) {
-    var w = def.c;
-    var h = def.rows.length;
-    var c = document.createElement('canvas');
-    c.width = w;
-    c.height = h;
-    var g = c.getContext('2d');
-    for (var r = 0; r < h; r++) {
-      var row = def.rows[r];
-      for (var x = 0; x < w; x++) {
-        var ch = row[x];
-        if (ch && ch !== '.' && P[ch]) {
-          g.fillStyle = P[ch];
-          g.fillRect(x, r, 1, 1);
-        }
-      }
-    }
-    return c;
-  }
-
-  var BAKED = {};
-  Object.keys(SPRITES).forEach(function (name) {
-    BAKED[name] = bakeSprite(SPRITES[name]);
-  });
-
-  /* ---------- state ---------- */
   var state = 'menu'; // menu | run | over
-  var playerY = 0;    // 0 = on ground, negative = in the air
+  var playerY = 0;
   var vy = 0;
   var speed = SPEED_START;
   var dist = 0;
@@ -202,11 +49,11 @@
   var invulnUntil = 0;
   var obstacles = [];
   var clouds = [];
-  var nextSpawnDist = 200;
+  var nextSpawnDist = 300;
   var best = 0;
   var lastTs = 0;
   var raf = null;
-  var running = false;
+  var frames = 0;
 
   try { best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) {}
 
@@ -225,85 +72,68 @@
 
   function reset() {
     playerY = 0; vy = 0; speed = SPEED_START; dist = 0; score = 0; tons = 0;
-    hearts = 3; invulnUntil = 0; obstacles = []; nextSpawnDist = 240;
-    clouds = [
-      { x: 90, y: 22 }, { x: 190, y: 38 }, { x: 280, y: 16 }
-    ];
+    hearts = 3; invulnUntil = 0; obstacles = []; nextSpawnDist = 360;
+    clouds = [{ x: 130, y: 30 }, { x: 270, y: 52 }, { x: 400, y: 22 }];
   }
 
-  /* ---------- spawning ---------- */
+  /* ---------- obstacles ---------- */
   function spawn() {
     var types = ['scam', 'cactus', 'fomo', 'airdrop', 'pit', 'ton', 'ton'];
     var type = types[Math.floor(Math.random() * types.length)];
-    var ob = { type: type, x: W + 12 };
-    if (type === 'scam') { ob.w = 26; ob.h = 20; ob.y = GROUND_Y - 20; }
-    if (type === 'cactus') { ob.w = 10; ob.h = 15; ob.y = GROUND_Y - 15; }
-    if (type === 'fomo') { ob.w = 15; ob.h = 17; ob.y = GROUND_Y - 17; }
-    if (type === 'airdrop') { ob.w = 13; ob.h = 11; ob.y = GROUND_Y - 42; }
-    if (type === 'pit') { ob.w = 42; ob.h = 8; ob.y = GROUND_Y; }
-    if (type === 'ton') { ob.w = 10; ob.h = 8; ob.y = GROUND_Y - (Math.random() < 0.5 ? 12 : 34); }
+    var ob = { type: type, x: W + 20 };
+    if (type === 'scam') { ob.w = 46; ob.h = 46; ob.y = GROUND_Y - 46; }
+    if (type === 'cactus') { ob.w = 16; ob.h = 28; ob.y = GROUND_Y - 28; }
+    if (type === 'fomo') { ob.w = 24; ob.h = 28; ob.y = GROUND_Y - 28; }
+    if (type === 'airdrop') { ob.w = 24; ob.h = 20; ob.y = GROUND_Y - 112; }
+    if (type === 'pit') { ob.w = 64; ob.h = 10; ob.y = GROUND_Y; }
+    if (type === 'ton') { ob.w = 20; ob.h = 16; ob.y = GROUND_Y - (Math.random() < 0.5 ? 22 : 104); }
     obstacles.push(ob);
   }
 
   function maybeSpawn() {
     if (dist >= nextSpawnDist) {
       spawn();
-      // fair gap: enough room to land and jump again at the current speed
-      nextSpawnDist = dist + speed * 0.8 + 60 + Math.random() * 140;
+      nextSpawnDist = dist + speed * 0.85 + 90 + Math.random() * 200;
     }
   }
 
-  /* ---------- collisions ---------- */
   function playerBox() {
-    return { x: PLAYER_X + 2, y: GROUND_Y - PLAYER_H - playerY, w: PLAYER_W - 3, h: PLAYER_H };
+    return { x: PLAYER_X + 7, y: GROUND_Y - PLAYER_H + 6 - playerY, w: 18, h: PLAYER_H - 6 };
   }
 
   function hitTest(ob) {
     var p = playerBox();
     if (ob.type === 'pit') {
-      // a pit hurts only when you are on the ground above it
       if (playerY > 1) return false;
-      return p.x + p.w > ob.x + 4 && p.x < ob.x + ob.w - 4;
+      return p.x + p.w > ob.x + 6 && p.x < ob.x + ob.w - 6;
     }
     return p.x < ob.x + ob.w && p.x + p.w > ob.x &&
       p.y < ob.y + ob.h && p.y + p.h > ob.y;
   }
 
   /* ---------- drawing ---------- */
-  function drawSprite(name, x, y) {
-    ctx.drawImage(BAKED[name], Math.round(x), Math.round(y));
-  }
-
-  function drawLabel(text, x, y) {
-    ctx.fillStyle = P.k;
-    ctx.font = '6px "Press Start 2P", monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText(text, x, y);
-  }
-
   function drawBoard(x, y, w, h, text) {
-    ctx.fillStyle = P.w;
+    ctx.fillStyle = S ? '#ffffff' : '#fff';
     ctx.fillRect(x, y, w, h);
-    ctx.fillStyle = P.k;
-    ctx.fillRect(x, y, w, 1); ctx.fillRect(x, y + h - 1, w, 1);
-    ctx.fillRect(x, y, 1, h); ctx.fillRect(x + w - 1, y, 1, h);
-    ctx.font = '5px "Press Start 2P", monospace';
+    ctx.fillStyle = '#1b1d22';
+    ctx.fillRect(x, y, w, 2); ctx.fillRect(x, y + h - 2, w, 2);
+    ctx.fillRect(x, y, 2, h); ctx.fillRect(x + w - 2, y, 2, h);
+    ctx.font = '8px "Press Start 2P", monospace';
     ctx.textAlign = 'center';
-    ctx.fillText(text, x + w / 2, y + h / 2 + 2);
+    ctx.fillText(text, x + w / 2, y + h / 2 + 4);
   }
 
   function render(now) {
     ctx.fillStyle = '#f4f4f2';
     ctx.fillRect(0, 0, W, H);
 
-    // clouds
     clouds.forEach(function (c) {
-      ctx.globalAlpha = 0.55;
-      ctx.drawImage(BAKED.cloud, Math.round(c.x), c.y);
+      ctx.globalAlpha = 0.5;
+      ctx.drawImage(S.cloud, Math.round(c.x), c.y, 32, 10);
       ctx.globalAlpha = 1;
     });
 
-    // ground with pits carved out
+    // ground, carving out pits
     var pits = obstacles.filter(function (o) { return o.type === 'pit'; });
     var segs = [[0, W]];
     pits.forEach(function (p) {
@@ -315,49 +145,67 @@
         return out;
       }).reduce(function (a, b) { return a.concat(b); }, []);
     });
-    ctx.fillStyle = P.k;
-    segs.forEach(function (s) { ctx.fillRect(s[0], GROUND_Y, s[1] - s[0], 2); });
+    ctx.fillStyle = '#1b1d22';
+    segs.forEach(function (s) { ctx.fillRect(s[0], GROUND_Y, s[1] - s[0], 3); });
 
-    // obstacles
     obstacles.forEach(function (o) {
       if (o.type === 'scam') {
-        ctx.fillStyle = P.k;
-        ctx.fillRect(Math.round(o.x) + 12, o.y + 10, 2, 10); // post
-        drawBoard(Math.round(o.x), o.y - 4, 26, 10, 'SCAM');
-      } else if (o.type === 'fomo') {
-        ctx.fillStyle = P.w;
-        ctx.fillRect(Math.round(o.x), o.y, o.w, o.h);
-        ctx.fillStyle = P.k;
-        ctx.fillRect(Math.round(o.x), o.y, o.w, 1);
-        ctx.fillRect(Math.round(o.x), o.y + o.h - 1, o.w, 1);
-        for (var i = 1; i <= 4; i++) ctx.fillRect(Math.round(o.x) + 2, o.y + 4 + i * 2, o.w - 4, 1);
-        drawLabel('FOMO', Math.round(o.x) + o.w / 2, o.y + 3);
-      } else if (o.type === 'airdrop') {
-        drawSprite('ghost', o.x, o.y);
-        drawLabel('FAKE', Math.round(o.x) + o.w / 2, o.y - 4);
-      } else if (o.type === 'pit') {
-        ctx.fillStyle = P.k;
-        ctx.fillRect(Math.round(o.x), GROUND_Y, o.w, H - GROUND_Y);
-        // spikes
-        for (var sx = 0; sx < o.w - 3; sx += 5) {
-          ctx.fillRect(Math.round(o.x) + sx, GROUND_Y + 6, 2, 3);
-          ctx.fillRect(Math.round(o.x) + sx + 2, GROUND_Y + 9, 2, 3);
-        }
-        drawBoard(Math.round(o.x) - 4, GROUND_Y - 12, o.w + 8, 9, 'RUG PULL');
-      } else if (o.type === 'ton') {
-        drawSprite('ton', o.x, o.y);
+        // one post from the board all the way down to the ground
+        ctx.fillStyle = '#1b1d22';
+        ctx.fillRect(Math.round(o.x) + o.w / 2 - 3, o.y + 14, 6, GROUND_Y - (o.y + 14));
+        drawBoard(Math.round(o.x), o.y, o.w, 14, 'SCAM');
       } else if (o.type === 'cactus') {
-        drawSprite('cactus', o.x, o.y);
+        ctx.drawImage(S.cactus, Math.round(o.x), o.y, o.w, o.h);
+      } else if (o.type === 'fomo') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(Math.round(o.x), o.y, o.w, o.h);
+        ctx.fillStyle = '#1b1d22';
+        ctx.fillRect(Math.round(o.x), o.y, o.w, 2);
+        ctx.fillRect(Math.round(o.x), o.y + o.h - 2, o.w, 2);
+        ctx.fillRect(Math.round(o.x) + o.w - 2, o.y, 2, o.h);
+        for (var i = 1; i <= 6; i++) ctx.fillRect(Math.round(o.x) + 3, o.y + 8 + i * 3, o.w - 6, 2);
+        ctx.font = '8px "Press Start 2P", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('FOMO', Math.round(o.x) + o.w / 2, o.y + 7);
+      } else if (o.type === 'airdrop') {
+        ctx.drawImage(S.ghost, Math.round(o.x), o.y, o.w, o.h);
+      } else if (o.type === 'pit') {
+        ctx.fillStyle = '#1b1d22';
+        ctx.fillRect(Math.round(o.x), GROUND_Y, o.w, H - GROUND_Y);
+        for (var sx = 0; sx < o.w - 4; sx += 8) {
+          ctx.fillRect(Math.round(o.x) + sx, GROUND_Y + 10, 3, 5);
+          ctx.fillRect(Math.round(o.x) + sx + 3, GROUND_Y + 15, 3, 5);
+        }
+        drawBoard(Math.round(o.x) - 8, GROUND_Y - 20, o.w + 16, 14, 'RUG PULL');
+      } else if (o.type === 'ton') {
+        ctx.drawImage(S.ton, Math.round(o.x), o.y, o.w, o.h);
       }
     });
 
-    // player (blink while invulnerable)
+    // player with a light run bob
+    var bob = (Math.floor(frames / 6) % 2 === 0) ? 0 : 1;
     var blink = now < invulnUntil && Math.floor(now / 90) % 2 === 0;
     if (!blink) {
-      var frame = (Math.floor(now / 110) % 2 === 0) ? 'dhdA' : 'dhdB';
-      if (state !== 'run') frame = 'dhdA';
-      drawSprite(frame, PLAYER_X, GROUND_Y - PLAYER_H - playerY);
+      ctx.drawImage(S.hchkGame, PLAYER_X, GROUND_Y - PLAYER_H - playerY + bob);
     }
+  }
+
+  /* ---------- menu / game-over screens ---------- */
+  function drawOverlay(kind) {
+    ctx.fillStyle = '#f4f4f2';
+    ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(S.hchkDetailed, 48, 4);
+    ctx.fillStyle = '#1b1d22';
+    ctx.font = '14px "Press Start 2P", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(kind === 'over' ? 'GAME OVER' : 'DHD PIXEL RUNNER', 150, 60);
+    ctx.font = '8px "Press Start 2P", monospace';
+    ctx.fillStyle = '#55595f';
+    if (kind === 'over') {
+      ctx.fillText('SCORE ' + pad(score) + '   TON ' + pad4(tons), 150, 88);
+      ctx.fillText('BEST  ' + pad(best), 150, 104);
+    }
+    ctx.fillText(t('game-menu', 'TAP / SPACE TO START'), 150, kind === 'over' ? 128 : 96);
   }
 
   /* ---------- loop ---------- */
@@ -365,45 +213,41 @@
     if (state !== 'run') return;
     var dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
     lastTs = ts;
+    frames += 1;
 
-    // physics
     if (playerY > 0 || vy < 0) {
       vy += GRAVITY * dt;
       playerY -= vy * dt;
       if (playerY <= 0) { playerY = 0; vy = 0; }
     }
 
-    speed = Math.min(SPEED_MAX, SPEED_START + dist * 0.04);
+    speed = Math.min(SPEED_MAX, SPEED_START + dist * 0.03);
     var dx = speed * dt;
     dist += dx;
-    score = Math.floor(dist / 8);
+    score = Math.floor(dist / 10);
 
     clouds.forEach(function (c) {
       c.x -= dx * 0.25;
-      if (c.x < -18) { c.x = W + 10; c.y = 12 + Math.floor(Math.random() * 30); }
+      if (c.x < -36) { c.x = W + 20; c.y = 18 + Math.floor(Math.random() * 45); }
     });
 
     obstacles.forEach(function (o) { o.x -= dx; });
-    obstacles = obstacles.filter(function (o) { return o.x + o.w > -10; });
+    obstacles = obstacles.filter(function (o) { return o.x + o.w > -20; });
     maybeSpawn();
 
-    // collisions & pickups
     var now = ts;
     for (var i = obstacles.length - 1; i >= 0; i--) {
       var ob = obstacles[i];
       if (ob.type === 'ton' && hitTest(ob)) {
         tons += 1;
-        score += 15;
+        score += 25;
         obstacles.splice(i, 1);
         continue;
       }
       if (ob.type !== 'ton' && now > invulnUntil && hitTest(ob)) {
         hearts -= 1;
-        invulnUntil = now + 1300;
-        if (ob.type === 'pit') {
-          // keep the pit under the player but let them jump out: nudge it left
-          ob.x -= ob.w + 30;
-        }
+        invulnUntil = now + 1400;
+        if (ob.type === 'pit') ob.x -= ob.w + 60;
         renderHud();
         if (hearts <= 0) { gameOver(now); return; }
       }
@@ -427,17 +271,16 @@
 
   function gameOver(now) {
     state = 'over';
-    running = false;
     if (raf) cancelAnimationFrame(raf);
-    render(now);
     if (score > best) {
       best = score;
       try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
     }
+    drawOverlay('over');
     renderHud();
     if (statusEl) statusEl.textContent = t('game-status-over', 'Game over — press Space or tap to run again.');
     if (shareBtn) {
-      var text = t('game-share-text', 'My DHD Runner score: {s}, {t} TON collected — beat me!')
+      var text = t('game-share-text', 'My DHD Pixel Runner score: {s}, {t} TON collected — beat me!')
         .replace('{s}', String(score)).replace('{t}', String(tons));
       shareBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent('https://thewayofdhd.github.io/game.html') +
         '&text=' + encodeURIComponent(text);
@@ -476,16 +319,12 @@
   /* ---------- boot ---------- */
   renderHud();
   reset();
-  // static menu frame
-  ctx.fillStyle = '#f4f4f2';
-  ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = P.k;
-  ctx.fillRect(0, GROUND_Y, W, 2);
-  drawSprite('dhdA', PLAYER_X, GROUND_Y - PLAYER_H);
-  drawLabel(t('game-menu', 'TAP / SPACE TO START'), W / 2, 34);
+  drawOverlay('menu');
   if (statusEl) statusEl.textContent = t('game-menu', 'TAP / SPACE TO START');
 
   window.addEventListener('dhd-langchange', function () {
-    if (state === 'menu' && statusEl) statusEl.textContent = t('game-menu', 'TAP / SPACE TO START');
+    if (state === 'menu') drawOverlay('menu');
+    if (state === 'over') drawOverlay('over');
+    if (statusEl && state === 'menu') statusEl.textContent = t('game-menu', 'TAP / SPACE TO START');
   });
 })();

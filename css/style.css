@@ -584,6 +584,11 @@
     text-align: center;
   }
 
+  .game-teaser-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
   .paper-teaser-media {
     max-width: 180px;
     margin: 0 auto;
@@ -595,6 +600,23 @@
     border-radius: var(--radius-sm);
     width: calc(100% - 28px);
   }
+}
+
+/* --- Pixel runner teaser --- */
+.game-teaser-inner {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(17, 17, 17, 0.9));
+}
+
+.game-teaser-inner .paper-teaser-media {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-accent);
 }
 
 /* --- Reset & Base --- */
