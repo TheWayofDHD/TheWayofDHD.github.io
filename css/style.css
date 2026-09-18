@@ -744,17 +744,17 @@ img {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 18px;
   list-style: none;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1360px) {
   .nav-links {
-    gap: 16px;
+    gap: 14px;
   }
 
   .nav-links a {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
   }
 }
 
