@@ -72,4 +72,14 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/rarity.html?lang=ru"/>
   </url>
 
+  <url>
+    <loc>https://thewayofdhd.github.io/postcard.html</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/postcard.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/postcard.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/postcard.html?lang=ru"/>
+  </url>
+
 </urlset>

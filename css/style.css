@@ -1859,6 +1859,34 @@ img {
   padding: 40px 0 80px;
 }
 
+/* --- Postcard of the day --- */
+.pc-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.pc-frame {
+  margin: 0;
+  text-align: center;
+}
+
+.pc-image {
+  width: min(420px, 72vw);
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-accent);
+  box-shadow: 0 16px 50px var(--accent-glow);
+}
+
+.pc-caption {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
 /* --- Why DHD pitch page --- */
 .why-safety {
   max-width: 840px;
