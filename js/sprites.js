@@ -1,99 +1,14 @@
 /* ============================================
    The Way of DHD — sprites.js
    Shared pixel-art sprites (ХЧК matrices by
-   JohnD) used by the runner, the menu screens
-   and the homepage preview.
+   JohnD). Baked twice: dark-on-light (day)
+   and light-on-dark (night).
    Exposes window.DHDSprites.
    ============================================ */
 
 (function () {
   'use strict';
 
-  var P = {
-    k: '#1b1d22',
-    r: '#e04848',
-    y: '#f2dfb4',
-    w: '#ffffff',
-    b: '#3aa9e0',
-    g: '#b9bec4',
-    d: '#55595f',
-    m: '#2a2d33',
-    n: '#0d0e10'
-  };
-
-  /* ---------- small props ---------- */
-  var PROPS = {
-    ton: {
-      c: 10,
-      rows: [
-        '..kkkkkk..',
-        '.kbbbbbbk.',
-        'kbbbwwbbbk',
-        'kbwwwwwwbk',
-        'kbwwwwwwbk',
-        'kbbbwwbbbk',
-        '.kbbbbbbk.',
-        '..kkkkkk..'
-      ]
-    },
-    cactus: {
-      c: 8,
-      rows: [
-        '...kk...',
-        '...kk...',
-        '...kk.k.',
-        'k..kk.k.',
-        'k..kk.k.',
-        'k..kkkkk',
-        'kkkkk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...',
-        '...kk...'
-      ]
-    },
-    cloud: {
-      c: 16,
-      rows: [
-        '.....ggggg......',
-        '...ggggggggg....',
-        '..gggggggggggg..',
-        'gggggggggggggggg',
-        '.gggggggggggggg.'
-      ]
-    },
-    heart: {
-      c: 7,
-      rows: [
-        '.kk.kk.',
-        'kkkkkkk',
-        'kkkkkkk',
-        '.kkkkk.',
-        '..kkk..',
-        '...k...'
-      ]
-    },
-    ghost: {
-      c: 12,
-      rows: [
-        '...kkkkkk...',
-        '..kkkkkkkk..',
-        '.kkkkkkkkkk.',
-        '.kkwkkkkwkk.',
-        '.kkkkkkkkkk.',
-        '.kkkkkkkkkk.',
-        '.kkkkkkkkkk.',
-        '.kkkkkkkkkk.',
-        '.kk.kkkk.kk.',
-        '..k..kk..k..'
-      ]
-    }
-  };
-
-  /* ---------- ХЧК gameplay sprite 32x71 ---------- */
   var HCHK_GAME = [
     '00000000001111110000000000000000',
     '00000000111111110000000000000000',
@@ -168,7 +83,6 @@
     '00111111100000000000001111111000'
   ];
 
-  /* detail coordinates in the 64x142 (2x) space */
   var HCHK_DETAILS = [
     [34, 8], [36, 8],
     [32, 10], [34, 10], [36, 10], [38, 10],
@@ -204,14 +118,84 @@
     [40, 130], [42, 128], [44, 130]
   ];
 
-  function upscaleMatrix(matrix, factor) {
-    var result = [];
-    matrix.forEach(function (row) {
-      var expanded = row.split('').map(function (ch) { return ch.repeat(factor); }).join('');
-      for (var y = 0; y < factor; y++) result.push(expanded);
-    });
-    return result;
-  }
+  var PROPS = {
+    ton: {
+      c: 10,
+      rows: [
+        '..kkkkkk..',
+        '.kbbbbbbk.',
+        'kbbbwwbbbk',
+        'kbwwwwwwbk',
+        'kbwwwwwwbk',
+        'kbbbwwbbbk',
+        '.kbbbbbbk.',
+        '..kkkkkk..'
+      ]
+    },
+    cactus: {
+      c: 8,
+      rows: [
+        '...kk...',
+        '...kk...',
+        '...kk.k.',
+        'k..kk.k.',
+        'k..kk.k.',
+        'k..kkkkk',
+        'kkkkk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...',
+        '...kk...'
+      ]
+    },
+    cloud: {
+      c: 16,
+      rows: [
+        '.....ggggg......',
+        '...ggggggggg....',
+        '..gggggggggggg..',
+        'gggggggggggggggg',
+        '.gggggggggggggg.'
+      ]
+    },
+    ghost: {
+      c: 12,
+      rows: [
+        '...kkkkkk...',
+        '..kkkkkkkk..',
+        '.kkkkkkkkkk.',
+        '.kkwkkkkwkk.',
+        '.kkkkkkkkkk.',
+        '.kkkkkkkkkk.',
+        '.kkkkkkkkkk.',
+        '.kkkkkkkkkk.',
+        '.kk.kkkk.kk.',
+        '..k..kk..k..'
+      ]
+    },
+    hillFar: {
+      c: 60,
+      rows: [
+        '............gg........................gg......................',
+        '...........gggg......................gggg.....................',
+        '..........gggggg........gg.........gggggg.....................',
+        '.........gggggggg......gggg.......gggggggg.ggg................',
+        '....gg..gggggggggg.ggggggggg....ggggggggggggggg.ggg...........',
+        '...gggggggggggggggggggggggggg..ggggggggggggggggggggggg.gggg...',
+        '..ggggggggggggggggggggggggggggggggggggggggggggggggggggggggg...'
+      ]
+    }
+  };
+
+  var PALETTES = {
+    // day: dark sprites on a light sky
+    day: { k: '#1b1d22', r: '#e04848', y: '#f2dfb4', w: '#ffffff', b: '#3aa9e0', g: '#b9bec4' },
+    // night: light sprites on a dark sky
+    night: { k: '#e8eaee', r: '#ff7b7b', y: '#f2dfb4', w: '#17181c', b: '#7fd0ff', g: '#3f434a' }
+  };
 
   function bake(rows, w, colors) {
     var h = rows.length;
@@ -221,8 +205,7 @@
     var g = c.getContext('2d');
     for (var r = 0; r < h; r++) {
       for (var x = 0; x < w; x++) {
-        var ch = rows[r][x];
-        var fill = colors[ch];
+        var fill = colors[rows[r][x]];
         if (fill) {
           g.fillStyle = fill;
           g.fillRect(x, r, 1, 1);
@@ -232,28 +215,48 @@
     return c;
   }
 
-  /* ---------- bake everything ---------- */
-  var baked = {};
-  Object.keys(PROPS).forEach(function (name) {
-    baked[name] = bake(PROPS[name].rows, PROPS[name].c, { k: P.k, b: P.b, w: P.w, g: P.g });
-  });
-
-  baked.hchkGame = bake(HCHK_GAME, 32, { '0': null, '1': P.k });
-
-  // 64x142 detailed: grey body + near-black details
-  var detailedRows = upscaleMatrix(HCHK_GAME, 2);
-  baked.hchkDetailed = bake(detailedRows, 64, { '0': null, '1': P.m });
-  (function () {
-    var g = baked.hchkDetailed.getContext('2d');
-    g.fillStyle = P.n;
-    HCHK_DETAILS.forEach(function (d) {
-      g.fillRect(d[0], d[1], 1, 1);
+  function upscaleMatrix(matrix, factor) {
+    var result = [];
+    matrix.forEach(function (row) {
+      var expanded = row.split('').map(function (ch) { return ch.repeat(factor); }).join('');
+      for (var y = 0; y < factor; y++) result.push(expanded);
     });
-  })();
+    return result;
+  }
+
+  function bakeSet(mode) {
+    var colors = PALETTES[mode];
+    var set = {};
+    Object.keys(PROPS).forEach(function (name) {
+      set[name] = bake(PROPS[name].rows, PROPS[name].c, colors);
+    });
+    // ХЧК matrix uses 0/1 — map 1 to the mode's ink color
+    set.hchkGame = bake(HCHK_GAME, 32, { '0': null, '1': colors.k });
+    return set;
+  }
+
+  function bakeDetailed(mode) {
+    var rows = upscaleMatrix(HCHK_GAME, 2);
+    var body = mode === 'day' ? '#2a2d33' : '#c9cdd2';
+    var detail = mode === 'day' ? '#0d0e10' : '#f4f4f2';
+    var c = bake(rows, 64, { '0': null, '1': body });
+    var g = c.getContext('2d');
+    g.fillStyle = detail;
+    HCHK_DETAILS.forEach(function (d) { g.fillRect(d[0], d[1], 1, 1); });
+    return c;
+  }
 
   window.DHDSprites = {
-    baked: baked,
-    palette: P,
-    details: HCHK_DETAILS
+    details: HCHK_DETAILS,
+    day: (function () {
+      var s = bakeSet('day');
+      s.hchkDetailed = bakeDetailed('day');
+      return s;
+    })(),
+    night: (function () {
+      var s = bakeSet('night');
+      s.hchkDetailed = bakeDetailed('night');
+      return s;
+    })()
   };
 })();

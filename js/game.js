@@ -1,9 +1,9 @@
 /* ============================================
    The Way of DHD — game.js
    DHD Pixel Runner (Chrome-Dino style):
-   horizontal canvas runner. Player sprite =
-   the ХЧК 32x71 matrix, menu screens use the
-   detailed 64x142 version. Sprites: sprites.js.
+   horizontal canvas runner with a day/night
+   cycle, parallax hills, dust and sparkles.
+   Sprites: sprites.js (day + night sets).
    ============================================ */
 
 (function () {
@@ -19,6 +19,7 @@
   var JUMP_VY = -300;
   var SPEED_START = 130;
   var SPEED_MAX = 300;
+  var NIGHT_EVERY = 350; // score points per day/night flip
   var BEST_KEY = 'dhd-runner-best';
 
   var canvas = document.getElementById('game-canvas');
@@ -32,13 +33,16 @@
   var ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
 
-  var S = window.DHDSprites.baked;
-
   function t(key, fallback) {
     return typeof window.dhdT === 'function' ? window.dhdT(key) : fallback;
   }
 
-  var state = 'menu'; // menu | run | over
+  var COLORS = {
+    day: { bg: '#f4f4f2', fg: '#1b1d22', hill: '#c9cdd2', hillNear: '#a7adb4', cloud: '#b9bec4' },
+    night: { bg: '#17181c', fg: '#e8eaee', hill: '#2c2f36', hillNear: '#3a3e46', cloud: '#3f434a' }
+  };
+
+  var state = 'menu';
   var playerY = 0;
   var vy = 0;
   var speed = SPEED_START;
@@ -47,8 +51,11 @@
   var tons = 0;
   var hearts = 3;
   var invulnUntil = 0;
+  var flashUntil = 0;
   var obstacles = [];
   var clouds = [];
+  var pebbles = [];
+  var dust = [];
   var nextSpawnDist = 300;
   var best = 0;
   var lastTs = 0;
@@ -59,6 +66,15 @@
 
   function pad(n) { return String(Math.max(0, Math.min(999999, Math.floor(n)))).padStart(6, '0'); }
   function pad4(n) { return String(Math.max(0, Math.min(9999, Math.floor(n)))).padStart(4, '0'); }
+
+  function isNight() { return Math.floor(score / NIGHT_EVERY) % 2 === 1; }
+
+  function setColors() {
+    var c = isNight() ? COLORS.night : COLORS.day;
+    ctx.fillStyle = c.bg;
+    ctx.fillRect(0, 0, W, H);
+    return c;
+  }
 
   function renderHud() {
     if (scoreEl) scoreEl.textContent = 'SCORE ' + pad(score);
@@ -72,8 +88,13 @@
 
   function reset() {
     playerY = 0; vy = 0; speed = SPEED_START; dist = 0; score = 0; tons = 0;
-    hearts = 3; invulnUntil = 0; obstacles = []; nextSpawnDist = 360;
+    hearts = 3; invulnUntil = 0; flashUntil = 0; obstacles = []; dust = [];
+    nextSpawnDist = 360;
     clouds = [{ x: 130, y: 30 }, { x: 270, y: 52 }, { x: 400, y: 22 }];
+    pebbles = [];
+    for (var i = 0; i < 26; i++) {
+      pebbles.push({ x: Math.random() * W, y: GROUND_Y + 6 + Math.random() * 10, s: Math.random() < 0.5 ? 2 : 3 });
+    }
   }
 
   /* ---------- obstacles ---------- */
@@ -111,11 +132,36 @@
       p.y < ob.y + ob.h && p.y + p.h > ob.y;
   }
 
+  /* ---------- particles ---------- */
+  function spawnDust(x, y, n) {
+    for (var i = 0; i < n; i++) {
+      dust.push({
+        x: x + (Math.random() * 10 - 5),
+        y: y - Math.random() * 4,
+        vx: -20 - Math.random() * 40,
+        vy: -30 - Math.random() * 40,
+        life: 0.45
+      });
+    }
+  }
+
+  function spawnSparkle(x, y) {
+    for (var i = 0; i < 6; i++) {
+      dust.push({
+        x: x, y: y,
+        vx: (Math.random() * 90 - 45),
+        vy: -40 - Math.random() * 60,
+        life: 0.4,
+        sparkle: true
+      });
+    }
+  }
+
   /* ---------- drawing ---------- */
-  function drawBoard(x, y, w, h, text) {
-    ctx.fillStyle = S ? '#ffffff' : '#fff';
+  function drawBoard(x, y, w, h, text, fg, bg) {
+    ctx.fillStyle = bg;
     ctx.fillRect(x, y, w, h);
-    ctx.fillStyle = '#1b1d22';
+    ctx.fillStyle = fg;
     ctx.fillRect(x, y, w, 2); ctx.fillRect(x, y + h - 2, w, 2);
     ctx.fillRect(x, y, 2, h); ctx.fillRect(x + w - 2, y, 2, h);
     ctx.font = '8px "Press Start 2P", monospace';
@@ -124,16 +170,42 @@
   }
 
   function render(now) {
-    ctx.fillStyle = '#f4f4f2';
+    var night = isNight();
+    var C = night ? COLORS.night : COLORS.day;
+    var S = night ? window.DHDSprites.night : window.DHDSprites.day;
+
+    // sky
+    ctx.fillStyle = C.bg;
     ctx.fillRect(0, 0, W, H);
 
-    clouds.forEach(function (c) {
-      ctx.globalAlpha = 0.5;
-      ctx.drawImage(S.cloud, Math.round(c.x), c.y, 32, 10);
-      ctx.globalAlpha = 1;
-    });
+    // sun / moon
+    ctx.fillStyle = night ? '#e8eaee' : '#ffd66b';
+    ctx.beginPath();
+    ctx.arc(W - 42, 22, 9, 0, Math.PI * 2);
+    ctx.fill();
+    if (night) {
+      ctx.fillStyle = C.bg;
+      ctx.beginPath();
+      ctx.arc(W - 47, 18, 8, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
-    // ground, carving out pits
+    // clouds
+    ctx.globalAlpha = 0.6;
+    clouds.forEach(function (c) {
+      ctx.drawImage(S.cloud, Math.round(c.x), c.y, 32, 10);
+    });
+    ctx.globalAlpha = 1;
+
+    // far hills (parallax)
+    var hillX = -((dist * 0.25) % 240);
+    ctx.globalAlpha = 0.5;
+    for (var hx = hillX - 240; hx < W + 240; hx += 240) {
+      ctx.drawImage(S.hillFar, Math.round(hx), GROUND_Y - 30, 240, 30);
+    }
+    ctx.globalAlpha = 1;
+
+    // ground with pits carved out
     var pits = obstacles.filter(function (o) { return o.type === 'pit'; });
     var segs = [[0, W]];
     pits.forEach(function (p) {
@@ -145,21 +217,28 @@
         return out;
       }).reduce(function (a, b) { return a.concat(b); }, []);
     });
-    ctx.fillStyle = '#1b1d22';
+    ctx.fillStyle = C.fg;
     segs.forEach(function (s) { ctx.fillRect(s[0], GROUND_Y, s[1] - s[0], 3); });
 
+    // pebbles under the ground line
+    ctx.globalAlpha = 0.45;
+    pebbles.forEach(function (pb) {
+      ctx.fillRect(Math.round(pb.x), Math.round(pb.y), pb.s, 2);
+    });
+    ctx.globalAlpha = 1;
+
+    // obstacles
     obstacles.forEach(function (o) {
       if (o.type === 'scam') {
-        // one post from the board all the way down to the ground
-        ctx.fillStyle = '#1b1d22';
+        ctx.fillStyle = C.fg;
         ctx.fillRect(Math.round(o.x) + o.w / 2 - 3, o.y + 14, 6, GROUND_Y - (o.y + 14));
-        drawBoard(Math.round(o.x), o.y, o.w, 14, 'SCAM');
+        drawBoard(Math.round(o.x), o.y, o.w, 14, 'SCAM', C.fg, C.bg);
       } else if (o.type === 'cactus') {
         ctx.drawImage(S.cactus, Math.round(o.x), o.y, o.w, o.h);
       } else if (o.type === 'fomo') {
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = night ? '#26282e' : '#ffffff';
         ctx.fillRect(Math.round(o.x), o.y, o.w, o.h);
-        ctx.fillStyle = '#1b1d22';
+        ctx.fillStyle = C.fg;
         ctx.fillRect(Math.round(o.x), o.y, o.w, 2);
         ctx.fillRect(Math.round(o.x), o.y + o.h - 2, o.w, 2);
         ctx.fillRect(Math.round(o.x) + o.w - 2, o.y, 2, o.h);
@@ -170,17 +249,25 @@
       } else if (o.type === 'airdrop') {
         ctx.drawImage(S.ghost, Math.round(o.x), o.y, o.w, o.h);
       } else if (o.type === 'pit') {
-        ctx.fillStyle = '#1b1d22';
+        ctx.fillStyle = C.fg;
         ctx.fillRect(Math.round(o.x), GROUND_Y, o.w, H - GROUND_Y);
         for (var sx = 0; sx < o.w - 4; sx += 8) {
           ctx.fillRect(Math.round(o.x) + sx, GROUND_Y + 10, 3, 5);
           ctx.fillRect(Math.round(o.x) + sx + 3, GROUND_Y + 15, 3, 5);
         }
-        drawBoard(Math.round(o.x) - 8, GROUND_Y - 20, o.w + 16, 14, 'RUG PULL');
+        drawBoard(Math.round(o.x) - 8, GROUND_Y - 20, o.w + 16, 14, 'RUG PULL', C.fg, C.bg);
       } else if (o.type === 'ton') {
         ctx.drawImage(S.ton, Math.round(o.x), o.y, o.w, o.h);
       }
     });
+
+    // dust & sparkles
+    dust.forEach(function (d) {
+      ctx.fillStyle = d.sparkle ? (night ? '#7fd0ff' : '#3aa9e0') : C.fg;
+      ctx.globalAlpha = Math.max(0, d.life / 0.45);
+      ctx.fillRect(Math.round(d.x), Math.round(d.y), d.sparkle ? 2 : 2, d.sparkle ? 2 : 2);
+    });
+    ctx.globalAlpha = 1;
 
     // player with a light run bob
     var bob = (Math.floor(frames / 6) % 2 === 0) ? 0 : 1;
@@ -188,19 +275,29 @@
     if (!blink) {
       ctx.drawImage(S.hchkGame, PLAYER_X, GROUND_Y - PLAYER_H - playerY + bob);
     }
+
+    // hit flash
+    if (now < flashUntil) {
+      ctx.fillStyle = 'rgba(224, 72, 72, 0.25)';
+      ctx.fillRect(0, 0, W, H);
+    }
   }
 
   /* ---------- menu / game-over screens ---------- */
   function drawOverlay(kind) {
-    ctx.fillStyle = '#f4f4f2';
+    var night = isNight();
+    var C = night ? COLORS.night : COLORS.day;
+    var S = night ? window.DHDSprites.night : window.DHDSprites.day;
+
+    ctx.fillStyle = C.bg;
     ctx.fillRect(0, 0, W, H);
     ctx.drawImage(S.hchkDetailed, 48, 4);
-    ctx.fillStyle = '#1b1d22';
+    ctx.fillStyle = C.fg;
     ctx.font = '14px "Press Start 2P", monospace';
     ctx.textAlign = 'left';
     ctx.fillText(kind === 'over' ? 'GAME OVER' : 'DHD PIXEL RUNNER', 150, 60);
     ctx.font = '8px "Press Start 2P", monospace';
-    ctx.fillStyle = '#55595f';
+    ctx.fillStyle = night ? '#8a9099' : '#55595f';
     if (kind === 'over') {
       ctx.fillText('SCORE ' + pad(score) + '   TON ' + pad4(tons), 150, 88);
       ctx.fillText('BEST  ' + pad(best), 150, 104);
@@ -218,7 +315,10 @@
     if (playerY > 0 || vy < 0) {
       vy += GRAVITY * dt;
       playerY -= vy * dt;
-      if (playerY <= 0) { playerY = 0; vy = 0; }
+      if (playerY <= 0 && vy > 0) {
+        playerY = 0; vy = 0;
+        spawnDust(PLAYER_X + PLAYER_W / 2, GROUND_Y, 5);
+      }
     }
 
     speed = Math.min(SPEED_MAX, SPEED_START + dist * 0.03);
@@ -229,6 +329,10 @@
     clouds.forEach(function (c) {
       c.x -= dx * 0.25;
       if (c.x < -36) { c.x = W + 20; c.y = 18 + Math.floor(Math.random() * 45); }
+    });
+    pebbles.forEach(function (pb) {
+      pb.x -= dx;
+      if (pb.x < -4) { pb.x = W + Math.random() * 20; pb.y = GROUND_Y + 6 + Math.random() * 10; }
     });
 
     obstacles.forEach(function (o) { o.x -= dx; });
@@ -241,17 +345,29 @@
       if (ob.type === 'ton' && hitTest(ob)) {
         tons += 1;
         score += 25;
+        spawnSparkle(ob.x + ob.w / 2, ob.y + ob.h / 2);
         obstacles.splice(i, 1);
         continue;
       }
       if (ob.type !== 'ton' && now > invulnUntil && hitTest(ob)) {
         hearts -= 1;
         invulnUntil = now + 1400;
+        flashUntil = now + 120;
+        spawnDust(PLAYER_X + PLAYER_W / 2, GROUND_Y - 20, 8);
         if (ob.type === 'pit') ob.x -= ob.w + 60;
         renderHud();
         if (hearts <= 0) { gameOver(now); return; }
       }
     }
+
+    // particles physics
+    dust = dust.filter(function (d) { return d.life > 0; });
+    dust.forEach(function (d) {
+      d.life -= dt;
+      d.x += d.vx * dt;
+      d.y += d.vy * dt;
+      d.vy += 260 * dt;
+    });
 
     render(now);
     renderHud();
@@ -290,7 +406,10 @@
 
   function jump() {
     if (state !== 'run') { start(); return; }
-    if (playerY === 0) { vy = JUMP_VY; playerY = 0.01; }
+    if (playerY === 0) {
+      vy = JUMP_VY; playerY = 0.01;
+      spawnDust(PLAYER_X + PLAYER_W / 2, GROUND_Y, 4);
+    }
   }
 
   /* ---------- controls ---------- */
