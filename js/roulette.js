@@ -126,17 +126,28 @@
       ' \u00b7 Diamond ' + counts.Diamond;
   }
 
+  var SITE_URL = 'https://thewayofdhd.github.io/';
+
   function updateShare(type, item) {
     if (!shareBtn) return;
-    var r = type === 'Diamond' ? 'Diamond — the Dickpaper' : (item ? item.name : type);
-    var text = t('rlt-share-text', 'I spun the ХЧК roulette: {r} — try your luck!').replace('{r}', r);
-    // Sharing the Getgems page of the won item pulls its artwork into the
-    // Telegram preview via that page's og:image; the Diamond shares the
-    // Dickpaper page, whose og:image is the artwork itself.
-    var url = type === 'Diamond'
-      ? 'https://thewayofdhd.github.io/dickpaper.html'
-      : (item ? GETGEMS_ITEM + item.address : 'https://thewayofdhd.github.io/');
-    shareBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent(url) +
+    var itemUrl, label;
+    if (type === 'Diamond') {
+      itemUrl = 'https://thewayofdhd.github.io/dickpaper.html';
+      label = t('rlt-hit-diamond', 'Jackpot: Diamond — the Dickpaper itself!');
+    } else if (item) {
+      itemUrl = GETGEMS_ITEM + item.address;
+      label = item.name || type;
+    } else {
+      itemUrl = SITE_URL;
+      label = type;
+    }
+    // Full links are inlined into the text; url= is kept so Telegram still
+    // shows the NFT artwork as the preview.
+    var text = t('rlt-share-text', 'I spun the ХЧК roulette: {r} ({url}) — try your luck! ({site})')
+      .replace('{r}', label)
+      .replace('{url}', itemUrl)
+      .replace('{site}', SITE_URL);
+    shareBtn.href = 'https://t.me/share/url?url=' + encodeURIComponent(itemUrl) +
       '&text=' + encodeURIComponent(text);
     shareBtn.style.display = '';
   }
