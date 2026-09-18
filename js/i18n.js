@@ -11,6 +11,7 @@
   var translations = {
     en: {
       'nav-home': 'Home',
+      'nav-game': 'DHD Runner',
       'nav-collection': 'Collection',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -63,6 +64,7 @@
     },
     ru: {
       'nav-home': '\u0413\u043b\u0430\u0432\u043d\u0430\u044f',
+      'nav-game': 'DHD Runner',
       'nav-collection': '\u041a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -115,6 +117,7 @@
     },
     es: {
       'nav-home': 'Inicio',
+      'nav-game': 'DHD Runner',
       'nav-collection': 'Colecci\u00f3n',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -167,6 +170,7 @@
     },
     zh: {
       'nav-home': '\u9996\u9875',
+      'nav-game': 'DHD Runner',
       'nav-collection': '\u85cf\u54c1',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -219,6 +223,7 @@
     },
     pt: {
       'nav-home': 'In\u00edcio',
+      'nav-game': 'DHD Runner',
       'nav-collection': 'Cole\u00e7\u00e3o',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -271,6 +276,7 @@
     },
     tr: {
       'nav-home': 'Ana Sayfa',
+      'nav-game': 'DHD Runner',
       'nav-collection': 'Koleksiyon',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -323,6 +329,7 @@
     },
     ja: {
       'nav-home': '\u30db\u30fc\u30e0',
+      'nav-game': 'DHD Runner',
       'nav-collection': '\u30b3\u30ec\u30af\u30b7\u30e7\u30f3',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -375,6 +382,7 @@
     },
     ko: {
       'nav-home': '\ud648',
+      'nav-game': 'DHD Runner',
       'nav-collection': '\uc5d0\ud074\ub808\uc158',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -427,6 +435,7 @@
     },
     ar: {
       'nav-home': '\u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629',
+      'nav-game': 'DHD Runner',
       'nav-collection': '\u0627\u0644\u0645\u062c\u0645\u0648\u0639\u0629',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -479,6 +488,7 @@
     },
     hi: {
       'nav-home': '\u0939\u094b\u092e',
+      'nav-game': 'DHD Runner',
       'nav-collection': '\u0938\u0902\u0917\u094d\u0930\u0939',
       'nav-telegram': 'Telegram',
       'nav-getgems': 'Getgems',
@@ -830,7 +840,7 @@
       'game-status-over': 'Game over — press Space or tap to run again.',
       'game-share-text': 'My DHD Pixel Runner score: {s}, {t} TON collected — beat me!',
       'game-note': 'A fan mini-game: no wallets, no transactions, no blockchain calls — just the Path.',
-      'nav-game': 'Game',
+      'nav-game': 'DHD Runner',
       'game-teaser-title': 'DHD Pixel Runner',
       'game-teaser-text': 'ХЧК goes pixel: run, dodge SCAM signs and rug pulls, collect TON and share your score. Free, right in the browser.',
       'game-teaser-cta': 'Play now',
@@ -957,7 +967,7 @@
       'game-status-over': 'Игра окончена — пробел или тап, чтобы запустить снова.',
       'game-share-text': 'Мой результат в DHD Pixel Runner: {s} очков, собрано {t} TON — побьёшь?',
       'game-note': 'Фан-мини-игра: без кошельков, транзакций и обращений к блокчейну — просто Путь.',
-      'nav-game': 'Игра',
+      'nav-game': 'DHD Runner',
       'game-teaser-title': 'DHD Pixel Runner',
       'game-teaser-text': 'ХЧК уходит в пиксели: беги, обходи знаки SCAM и rug pull, собирай TON и делись результатом. Бесплатно, прямо в браузере.',
       'game-teaser-cta': 'Играть',
