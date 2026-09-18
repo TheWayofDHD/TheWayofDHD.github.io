@@ -17,10 +17,12 @@
   var PLAYER_H = 71;
   var GRAVITY = 1180;
   var JUMP_VY = -375;
+  var FREE_WALK_SPEED = 145;
   var SPEED_START = 130;
   var SPEED_MAX = 300;
   var NIGHT_EVERY = 350; // score points per day/night flip
   var BEST_KEY = 'dhd-runner-best';
+  var DENDY_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
 
   var canvas = document.getElementById('game-canvas');
   var scoreEl = document.getElementById('game-score');
@@ -43,6 +45,7 @@
   };
 
   var state = 'menu';
+  var playerX = PLAYER_X;
   var playerY = 0;
   var vy = 0;
   var speed = SPEED_START;
@@ -61,6 +64,9 @@
   var lastTs = 0;
   var raf = null;
   var frames = 0;
+  var freeMode = false;
+  var dendyIndex = 0;
+  var keys = {};
 
   try { best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) {}
 
@@ -87,8 +93,9 @@
   }
 
   function reset() {
-    playerY = 0; vy = 0; speed = SPEED_START; dist = 0; score = 0; tons = 0;
+    playerX = PLAYER_X; playerY = 0; vy = 0; speed = SPEED_START; dist = 0; score = 0; tons = 0;
     hearts = 3; invulnUntil = 0; flashUntil = 0; obstacles = []; dust = [];
+    freeMode = false; keys = {};
     nextSpawnDist = 360;
     clouds = [{ x: 130, y: 30 }, { x: 270, y: 52 }, { x: 400, y: 22 }];
     pebbles = [];
@@ -119,7 +126,7 @@
   }
 
   function playerBox() {
-    return { x: PLAYER_X + 7, y: GROUND_Y - PLAYER_H + 6 - playerY, w: 18, h: PLAYER_H - 6 };
+    return { x: playerX + 7, y: GROUND_Y - PLAYER_H + 6 - playerY, w: 18, h: PLAYER_H - 6 };
   }
 
   function hitTest(ob) {
@@ -267,10 +274,17 @@
     ctx.globalAlpha = 1;
 
     // player with a light run bob (grounded only)
-    var bob = (playerY === 0 && Math.floor(frames / 6) % 2 === 0) ? 1 : 0;
+    var bob = (!freeMode && playerY === 0 && Math.floor(frames / 6) % 2 === 0) ? 1 : 0;
     var blink = now < invulnUntil && Math.floor(now / 90) % 2 === 0;
     if (!blink) {
-      ctx.drawImage(S.hchkGame, PLAYER_X, GROUND_Y - PLAYER_H - playerY + bob);
+      ctx.drawImage(S.hchkGame, Math.round(playerX), GROUND_Y - PLAYER_H - playerY + bob);
+    }
+
+    if (freeMode) {
+      ctx.font = '7px "Press Start 2P", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = night ? '#7fd0ff' : '#007ea0';
+      ctx.fillText('DENDY MODE', 8, 16);
     }
 
     // hit flash
@@ -309,19 +323,33 @@
     lastTs = ts;
     frames += 1;
 
+    if (freeMode) {
+      var move = 0;
+      if (keys.ArrowLeft) move -= 1;
+      if (keys.ArrowRight) move += 1;
+      if (move) {
+        playerX += move * FREE_WALK_SPEED * dt;
+        playerX = Math.max(8, Math.min(W - PLAYER_W - 8, playerX));
+        if (playerY === 0 && frames % 8 === 0) spawnDust(playerX + PLAYER_W / 2, GROUND_Y, 1);
+      }
+      if (keys.ArrowDown && playerY > 0) vy = Math.max(vy, 260);
+    }
+
     if (playerY > 0 || vy < 0) {
       vy += GRAVITY * dt;
       playerY -= vy * dt;
       if (playerY <= 0 && vy > 0) {
         playerY = 0; vy = 0;
-        spawnDust(PLAYER_X + PLAYER_W / 2, GROUND_Y, 5);
+        spawnDust(playerX + PLAYER_W / 2, GROUND_Y, 5);
       }
     }
 
-    speed = Math.min(SPEED_MAX, SPEED_START + dist * 0.03);
-    var dx = speed * dt;
-    dist += dx;
-    score = Math.floor(dist / 10);
+    speed = freeMode ? 0 : Math.min(SPEED_MAX, SPEED_START + dist * 0.03);
+    var dx = freeMode ? 0 : speed * dt;
+    if (!freeMode) {
+      dist += dx;
+      score = Math.floor(dist / 10);
+    }
 
     clouds.forEach(function (c) {
       c.x -= dx * 0.25;
@@ -334,7 +362,7 @@
 
     obstacles.forEach(function (o) { o.x -= dx; });
     obstacles = obstacles.filter(function (o) { return o.x + o.w > -20; });
-    maybeSpawn();
+    if (!freeMode) maybeSpawn();
 
     var now = ts;
     for (var i = obstacles.length - 1; i >= 0; i--) {
@@ -350,7 +378,7 @@
         hearts -= 1;
         invulnUntil = now + 1400;
         flashUntil = now + 120;
-        spawnDust(PLAYER_X + PLAYER_W / 2, GROUND_Y - 20, 8);
+        spawnDust(playerX + PLAYER_W / 2, GROUND_Y - 20, 8);
         if (ob.type === 'pit') ob.x -= ob.w + 60;
         renderHud();
         if (hearts <= 0) { gameOver(now); return; }
@@ -405,8 +433,38 @@
     if (state !== 'run') { start(); return; }
     if (playerY === 0) {
       vy = JUMP_VY; playerY = 0.01;
-      spawnDust(PLAYER_X + PLAYER_W / 2, GROUND_Y, 4);
+      spawnDust(playerX + PLAYER_W / 2, GROUND_Y, 4);
     }
+  }
+
+  function setRunnerStatus() {
+    if (!statusEl) return;
+    statusEl.textContent = freeMode
+      ? 'DENDY MODE: \u2190 \u2192 = walk \u00b7 \u2191 / Space = jump \u00b7 enter the code again to run.'
+      : t('game-status-run', 'SPACE / TAP = jump \u00b7 \u25c7 = TON \u00b7 X = scam');
+  }
+
+  function toggleDendyMode() {
+    if (state !== 'run') start();
+    freeMode = !freeMode;
+    keys = {};
+    if (freeMode) {
+      speed = 0;
+      playerX = Math.max(8, Math.min(W - PLAYER_W - 8, playerX));
+    }
+    setRunnerStatus();
+  }
+
+  function trackDendyCode(key) {
+    if (key === DENDY_CODE[dendyIndex]) {
+      dendyIndex += 1;
+      if (dendyIndex === DENDY_CODE.length) {
+        dendyIndex = 0;
+        toggleDendyMode();
+      }
+      return;
+    }
+    dendyIndex = key === DENDY_CODE[0] ? 1 : 0;
   }
 
   /* ---------- controls ---------- */
@@ -415,11 +473,17 @@
     var rect = canvas.getBoundingClientRect();
     var visible = rect.top < window.innerHeight * 0.8 && rect.bottom > 80;
     if (!visible) return;
+    trackDendyCode(event.key);
+    if (event.key.indexOf('Arrow') === 0) keys[event.key] = true;
     if (event.key === ' ' || event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
       event.preventDefault();
       jump();
     }
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') event.preventDefault();
+    if (event.key.indexOf('Arrow') === 0) event.preventDefault();
+  });
+
+  document.addEventListener('keyup', function (event) {
+    if (event.key.indexOf('Arrow') === 0) keys[event.key] = false;
   });
 
   canvas.addEventListener('pointerdown', function (event) {
