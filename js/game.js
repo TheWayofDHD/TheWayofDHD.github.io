@@ -15,7 +15,6 @@
   var PLAYER_X = 44;
   var PLAYER_W = 32;
   var PLAYER_H = 71;
-  var PLAYER_LEGLESS_DROP = 19;
   var GRAVITY = 1180;
   var JUMP_VY = -375;
   var FREE_WALK_SPEED = 145;
@@ -281,7 +280,7 @@
     var blink = now < invulnUntil && Math.floor(now / 90) % 2 === 0;
     if (!blink) {
       var playerDrawX = Math.round(playerX);
-      var playerDrawY = Math.round(GROUND_Y - PLAYER_H - playerY + bob + PLAYER_LEGLESS_DROP);
+      var playerDrawY = Math.round(GROUND_Y - PLAYER_H - playerY + bob);
       ctx.drawImage(S.hchkGame, playerDrawX, playerDrawY);
     }
 
