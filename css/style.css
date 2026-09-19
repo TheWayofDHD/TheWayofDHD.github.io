@@ -752,7 +752,7 @@ img {
   min-width: 0;
 }
 
-@media (max-width: 1360px) {
+@media (max-width: 1480px) {
   .nav-links {
     gap: 14px;
   }
@@ -2132,7 +2132,7 @@ img {
   }
 }
 
-@media (max-width: 1360px) {
+@media (max-width: 1480px) {
   .nav-links {
     display: none;
     position: absolute;

@@ -197,6 +197,13 @@
     night: { k: '#e8eaee', r: '#ff7b7b', y: '#f2dfb4', w: '#17181c', b: '#7fd0ff', g: '#3f434a' }
   };
 
+  var HCHK_LEGLESS_FROM_Y = 52;
+
+  function clearBelow(canvas, y) {
+    canvas.getContext('2d').clearRect(0, y, canvas.width, canvas.height - y);
+    return canvas;
+  }
+
   function bake(rows, w, colors) {
     var h = rows.length;
     var c = document.createElement('canvas');
@@ -231,7 +238,7 @@
       set[name] = bake(PROPS[name].rows, PROPS[name].c, colors);
     });
     // ХЧК matrix uses 0/1 — map 1 to the mode's ink color
-    set.hchkGame = bake(HCHK_GAME, 32, { '0': null, '1': colors.k });
+    set.hchkGame = clearBelow(bake(HCHK_GAME, 32, { '0': null, '1': colors.k }), HCHK_LEGLESS_FROM_Y);
     return set;
   }
 
@@ -243,6 +250,7 @@
     var g = c.getContext('2d');
     g.fillStyle = detail;
     HCHK_DETAILS.forEach(function (d) { g.fillRect(d[0], d[1], 1, 1); });
+    clearBelow(c, HCHK_LEGLESS_FROM_Y * 2);
     return c;
   }
 
