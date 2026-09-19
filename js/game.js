@@ -178,28 +178,6 @@
     ctx.fillText(text, x + w / 2, y + h / 2 + 4);
   }
 
-  function drawRunnerLegs(x, y, C, night, isWalking) {
-    var px = Math.round(x);
-    var py = Math.round(y);
-    var phase = isWalking ? (Math.floor(frames / 5) % 2 === 0 ? -1 : 1) : 0;
-    var leftStep = phase * 3;
-    var rightStep = -phase * 3;
-    var hipY = py + PLAYER_H - 13;
-    var footY = py + PLAYER_H - 4;
-
-    ctx.fillStyle = C.bg;
-    ctx.fillRect(px + 7, py + PLAYER_H - 12, 9, 12);
-    ctx.fillRect(px + 20, py + PLAYER_H - 12, 9, 12);
-
-    ctx.fillStyle = C.fg;
-    ctx.fillRect(px + 11 + phase, hipY, 3, 10);
-    ctx.fillRect(px + 21 - phase, hipY, 3, 10);
-
-    ctx.fillStyle = night ? '#ff7b7b' : '#e04848';
-    ctx.fillRect(px + 8 + leftStep, footY, 9, 3);
-    ctx.fillRect(px + 18 + rightStep, footY, 9, 3);
-  }
-
   function render(now) {
     var night = isNight();
     var C = night ? COLORS.night : COLORS.day;
@@ -303,9 +281,7 @@
     if (!blink) {
       var playerDrawX = Math.round(playerX);
       var playerDrawY = Math.round(GROUND_Y - PLAYER_H - playerY + bob);
-      var walking = playerY === 0 && (!freeMode || keys.ArrowLeft !== keys.ArrowRight);
       ctx.drawImage(S.hchkGame, playerDrawX, playerDrawY);
-      drawRunnerLegs(playerDrawX, playerDrawY, C, night, walking);
     }
 
     if (freeMode) {
