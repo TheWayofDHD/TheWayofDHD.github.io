@@ -18,6 +18,8 @@
   var GRAVITY = 1180;
   var JUMP_VY = -375;
   var FREE_WALK_SPEED = 145;
+  var FREE_WALK_LEFT = 72;
+  var FREE_WALK_RIGHT = 260;
   var SPEED_START = 130;
   var SPEED_MAX = 300;
   var NIGHT_EVERY = 350; // score points per day/night flip
@@ -176,6 +178,28 @@
     ctx.fillText(text, x + w / 2, y + h / 2 + 4);
   }
 
+  function drawRunnerLegs(x, y, C, night, isWalking) {
+    var px = Math.round(x);
+    var py = Math.round(y);
+    var phase = isWalking ? (Math.floor(frames / 5) % 2 === 0 ? -1 : 1) : 0;
+    var leftStep = phase * 3;
+    var rightStep = -phase * 3;
+    var hipY = py + PLAYER_H - 13;
+    var footY = py + PLAYER_H - 4;
+
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(px + 7, py + PLAYER_H - 12, 9, 12);
+    ctx.fillRect(px + 20, py + PLAYER_H - 12, 9, 12);
+
+    ctx.fillStyle = C.fg;
+    ctx.fillRect(px + 11 + phase, hipY, 3, 10);
+    ctx.fillRect(px + 21 - phase, hipY, 3, 10);
+
+    ctx.fillStyle = night ? '#ff7b7b' : '#e04848';
+    ctx.fillRect(px + 8 + leftStep, footY, 9, 3);
+    ctx.fillRect(px + 18 + rightStep, footY, 9, 3);
+  }
+
   function render(now) {
     var night = isNight();
     var C = night ? COLORS.night : COLORS.day;
@@ -277,7 +301,11 @@
     var bob = (!freeMode && playerY === 0 && Math.floor(frames / 6) % 2 === 0) ? 1 : 0;
     var blink = now < invulnUntil && Math.floor(now / 90) % 2 === 0;
     if (!blink) {
-      ctx.drawImage(S.hchkGame, Math.round(playerX), GROUND_Y - PLAYER_H - playerY + bob);
+      var playerDrawX = Math.round(playerX);
+      var playerDrawY = Math.round(GROUND_Y - PLAYER_H - playerY + bob);
+      var walking = playerY === 0 && (!freeMode || keys.ArrowLeft !== keys.ArrowRight);
+      ctx.drawImage(S.hchkGame, playerDrawX, playerDrawY);
+      drawRunnerLegs(playerDrawX, playerDrawY, C, night, walking);
     }
 
     if (freeMode) {
@@ -323,12 +351,25 @@
     lastTs = ts;
     frames += 1;
 
+    var freeMove = 0;
+    var freeWorldDx = 0;
+
     if (freeMode) {
       var move = 0;
       if (keys.ArrowLeft) move -= 1;
       if (keys.ArrowRight) move += 1;
       if (move) {
-        playerX += move * FREE_WALK_SPEED * dt;
+        freeMove = move * FREE_WALK_SPEED * dt;
+        playerX += freeMove;
+        if (playerX > FREE_WALK_RIGHT) {
+          freeWorldDx += playerX - FREE_WALK_RIGHT;
+          playerX = FREE_WALK_RIGHT;
+        }
+        if (playerX < FREE_WALK_LEFT) {
+          freeWorldDx += playerX - FREE_WALK_LEFT;
+          playerX = FREE_WALK_LEFT;
+        }
+        if (freeWorldDx < 0 && dist + freeWorldDx < 0) freeWorldDx = -dist;
         playerX = Math.max(8, Math.min(W - PLAYER_W - 8, playerX));
         if (playerY === 0 && frames % 8 === 0) spawnDust(playerX + PLAYER_W / 2, GROUND_Y, 1);
       }
@@ -344,9 +385,14 @@
       }
     }
 
-    speed = freeMode ? 0 : Math.min(SPEED_MAX, SPEED_START + dist * 0.03);
-    var dx = freeMode ? 0 : speed * dt;
-    if (!freeMode) {
+    speed = freeMode ? FREE_WALK_SPEED : Math.min(SPEED_MAX, SPEED_START + dist * 0.03);
+    var dx = freeMode ? freeWorldDx : speed * dt;
+    if (freeMode) {
+      if (dx !== 0) {
+        dist = Math.max(0, dist + dx);
+        score = Math.max(score, Math.floor(dist / 10));
+      }
+    } else {
       dist += dx;
       score = Math.floor(dist / 10);
     }
@@ -354,15 +400,17 @@
     clouds.forEach(function (c) {
       c.x -= dx * 0.25;
       if (c.x < -36) { c.x = W + 20; c.y = 18 + Math.floor(Math.random() * 45); }
+      if (c.x > W + 40) { c.x = -36; c.y = 18 + Math.floor(Math.random() * 45); }
     });
     pebbles.forEach(function (pb) {
       pb.x -= dx;
       if (pb.x < -4) { pb.x = W + Math.random() * 20; pb.y = GROUND_Y + 6 + Math.random() * 10; }
+      if (pb.x > W + 8) { pb.x = -Math.random() * 20; pb.y = GROUND_Y + 6 + Math.random() * 10; }
     });
 
     obstacles.forEach(function (o) { o.x -= dx; });
     obstacles = obstacles.filter(function (o) { return o.x + o.w > -20; });
-    if (!freeMode) maybeSpawn();
+    if (!freeMode || dx > 0) maybeSpawn();
 
     var now = ts;
     for (var i = obstacles.length - 1; i >= 0; i--) {
