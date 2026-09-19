@@ -719,13 +719,16 @@ img {
   justify-content: space-between;
   height: 72px;
   gap: 14px;
+  max-width: 1680px;
 }
 
 .nav-brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 0 0 auto;
   min-width: 0;
+  padding-right: clamp(16px, 1.4vw, 30px);
 }
 
 .nav-logo {
@@ -747,7 +750,9 @@ img {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.1vw, 18px);
+  justify-content: center;
+  flex: 1 1 auto;
+  gap: clamp(12px, 1vw, 18px);
   list-style: none;
   min-width: 0;
 }
@@ -797,7 +802,7 @@ img {
 
 /* Language Selector */
 .lang-selector {
-  margin-left: 12px;
+  margin-left: clamp(12px, 1vw, 20px);
   flex: 0 0 auto;
 }
 
