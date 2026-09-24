@@ -1,0 +1,35 @@
+# The Way of DHD (Путь ХЧК)
+
+> A hand-drawn NFT collection of 1022 characters on the TON blockchain: 1000 Epic, 21 Exclusive and 1 Diamond Dickpaper. First offered to the community on 30 May 2022.
+
+The site is a static GitHub Pages site with live on-chain stats (floor, owners, listings) read from the public TON API. Language switcher supports 10 languages client-side; deep content is fully written in English and Russian.
+
+## Official links
+
+- [Collection on Getgems](https://getgems.io/collection/EQDzvSAKspPnYIhuqZe0_dMfrEEUlwKVzb4dJo0sRoxZwRZe): official marketplace page for all 1022 items
+- [Telegram channel](https://t.me/WayofDHD): news and announcements
+- [Collectors chat](https://t.me/WayofDHD_Chat): community discussion
+- [About the project](https://thewayofdhd.github.io/about.html): story, contract, official links
+- [Contact](https://thewayofdhd.github.io/contact.html): Telegram-only contact methods
+- [Privacy policy](https://thewayofdhd.github.io/privacy.html): what the static site stores
+
+## Key facts
+
+- Total supply: 1022 NFTs
+- Types: Epic 1000 (97.85%), Exclusive 21 (2.05%), Diamond 1 (0.10%)
+- Collection contract: EQDzvSAKspPnYIhuqZe0_dMfrEEUlwKVzb4dJo0sRoxZwRZe
+- Separate jetton $DHD: supply 10,000,000, contract EQBCFwW8uFUh-amdRmNY9NyeDEaeDYXd9ggJGsicpqVcHq7B
+- Author: JohnD. Artwork: DenKa.
+- This site is a community reference; nothing here is financial advice.
+
+## Content pages
+
+- [Home](https://thewayofdhd.github.io/): stats, rarity table, FAQ, links
+- [Collection browser](https://thewayofdhd.github.io/collection.html): filter all 1022 items by type
+- [Rarity explorer](https://thewayofdhd.github.io/rarity.html): every trait with holder counts and shares
+- [How to buy](https://thewayofdhd.github.io/guide.html): five-step guide for beginners
+- [Why DHD](https://thewayofdhd.github.io/why.html): holder benefits and mini FAQ
+- [Dickpaper viewer](https://thewayofdhd.github.io/dickpaper.html): zoomable 1-of-1 Diamond artwork
+- [Advent bot](https://thewayofdhd.github.io/advent.html): daily Telegram postcards
+- [Postcard of the day](https://thewayofdhd.github.io/postcard.html): one card a day on the site
+- [DHD Pixel Runner](https://thewayofdhd.github.io/game.html): free browser mini-game

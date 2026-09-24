@@ -11,9 +11,21 @@ Static site for the **The Way of DHD / Путь ХЧК** NFT collection (TON). P
 | `index.html` | Home: live stats, rarity table (Epic / Exclusive / Diamond), Dickpaper teaser, `$DHD` jetton section, FAQ, links, sources |
 | `collection.html` | Full browser of all 1022 NFTs with type filters and ask prices |
 | `dickpaper.html` | Full-resolution Dickpaper viewer with loading progress, zoom and pan |
+| `about.html` | About the project: story, official links, contract |
+| `contact.html` | Telegram-only contact methods |
+| `privacy.html` | Privacy policy (localStorage language preference, third-party services) |
+| `llms.txt` | AI/LLM site description (llmstxt.org) |
 | `404.html` | Not-found page (noindex) |
 | `robots.txt` | Crawler policy — all traditional and AI bots allowed |
-| `sitemap.xml` | Three URLs with `x-default`/`en`/`ru` alternates |
+| `sitemap.xml` | URLs with `x-default`/`en`/`ru` alternates |
+
+## Hosting limitation (GitHub Pages)
+
+GitHub Pages does not allow custom response security headers (`Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `COOP`). HSTS is set by GitHub (`max-age=31556952`). Mitigations in this repo:
+
+- `<meta http-equiv="X-Content-Type-Options" content="nosniff">` and `<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">` on every page (limited browser support for meta forms).
+- No inline event handlers; scripts use `defer`.
+- Full header control would require Cloudflare Pages/Netlify or a reverse proxy in front of Pages.
 
 ## Data
 
@@ -32,10 +44,12 @@ The page itself additionally refreshes supply and owner counters live from `http
 ## SEO / GEO
 
 - Unique `<title>` and `<meta name="description">` per page, canonical URLs, `hreflang` alternates (`x-default`, `en`, `ru`).
-- JSON-LD: `WebSite`, `Organization`, `CollectionPage`, `Product` + `AggregateOffer`, `FAQPage`, `BreadcrumbList`, `VisualArtwork`, `SpeakableSpecification`.
+- JSON-LD: `WebSite`, `Organization`, `CollectionPage`, `Product` + `Offer`, `FAQPage`, `BreadcrumbList`, `VisualArtwork`, `SpeakableSpecification` — with stable `@id` references.
 - GEO content pattern: answer-first paragraphs, concrete statistics (1000/21/1 items, 97.85/2.05/0.10%, 658 owners, 249 listings, floor 1 TON), citations to TON API / Getgems / Tonviewer, and a Sources block.
 - `robots.txt` explicitly allows GPTBot, OAI-SearchBot, PerplexityBot, ClaudeBot, anthropic-ai, Google-Extended, Bingbot, Applebot-Extended, CCBot.
+- `llms.txt` at the site root for AI discovery; `meta robots` allows snippets (no `max-snippet:-1`).
 - All images have descriptive `alt` text; the Dickpaper image is served with a blurred inline preview plus a real progress indicator.
+- Accessibility: skip-link, `<main id="main">` landmark, labeled controls, heading hierarchy H1→H2→H3.
 
 ## Internationalisation
 

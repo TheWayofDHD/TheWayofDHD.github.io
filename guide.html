@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,7 +7,9 @@
   <title>How to buy a DHD NFT on TON — step-by-step guide for beginners (Путь ХЧК)</title>
   <meta name="description" content="Buy your first DHD NFT in five steps: install a TON wallet, top up TON, open the official collection on Getgems, pick a lot, confirm. Floor from 1 TON, fees are cents.">
   <meta name="keywords" content="how to buy TON NFT, DHD how to buy, Getgems guide, Tonkeeper guide, buy DHD NFT, Путь ХЧК как купить">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   <meta name="theme-color" content="#0a0a0a">
   <link rel="canonical" href="https://thewayofdhd.github.io/guide.html">
 
@@ -34,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260919-4">
+  <link rel="stylesheet" href="css/style.css?v=20260924-1">
 
   <script type="application/ld+json">
   {
@@ -67,12 +69,13 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Navigation -->
   <nav class="nav">
     <div class="container nav-inner">
       <a href="./" class="nav-brand" aria-label="The Way of DHD — home">
-        <img src="assets/logo-collection.png" alt="The Way of DHD logo" class="nav-logo">
+        <img src="assets/logo-collection.png" alt="The Way of DHD logo" class="nav-logo" width="40" height="40">
         <span class="nav-title">The Way of DHD</span>
       </a>
       <ul class="nav-links" id="nav-links">
@@ -85,6 +88,9 @@
         <li><a href="advent.html" data-i18n="nav-advent">Advent</a></li>
         <li><a href="./#token" data-i18n="nav-token">$DHD</a></li>
         <li><a href="./#faq" data-i18n="nav-faq">FAQ</a></li>
+                <li><a href="about.html" data-i18n="nav-about">About</a></li>
+        <li><a href="contact.html" data-i18n="nav-contact">Contact</a></li>
+        <li><a href="privacy.html" data-i18n="nav-privacy">Privacy</a></li>
         <li><a href="https://t.me/WayofDHD" data-i18n="nav-telegram" target="_blank" rel="noopener noreferrer">Telegram</a></li>
         <li><a href="https://getgems.io/collection/EQDzvSAKspPnYIhuqZe0_dMfrEEUlwKVzb4dJo0sRoxZwRZe" data-i18n="nav-getgems" target="_blank" rel="noopener noreferrer" class="nav-cta">Getgems</a></li>
       </ul>
@@ -103,13 +109,15 @@
           <option value="hi">&#2361;&#2367;&#2306;&#2342;&#2368;</option>
         </select>
       </div>
-      <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
+      <button type="button" class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-links" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
 
-  <!-- Hero -->
+  
+  <main id="main">
+<!-- Hero -->
   <section class="page-hero">
     <h1 data-i18n="guide-title">How to buy a DHD NFT on TON</h1>
     <p data-i18n="guide-lead">From zero to your first DHD in about 20 minutes: a wallet, a little TON and the official Getgems collection. Floor historically starts around 1 TON, and network fees are cents.</p>
@@ -118,6 +126,10 @@
   <!-- Steps -->
   <section class="token">
     <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-tag" data-i18n="guide-steps-tag">Steps</div>
+        <h2 class="section-title" data-i18n="guide-steps-title">Five steps to your first DHD</h2>
+      </div>
       <div class="advent-steps fade-in">
         <div class="advent-step">
           <div class="advent-step-num">1</div>
@@ -166,6 +178,8 @@
   </section>
 
   <!-- Footer -->
+  </main>
+
   <footer class="footer">
     <div class="container footer-inner">
       <span class="footer-text" data-i18n="footer-text">The Way of DHD — Путь ХЧК. Built on TON.</span>
@@ -174,6 +188,10 @@
         <a href="collection.html" data-i18n="nav-collection">Collection</a>
         <a href="dickpaper.html" data-i18n="nav-dickpaper">Dickpaper</a>
         <a href="advent.html" data-i18n="nav-advent">Advent</a>
+        <a href="postcard.html" data-i18n="pc-title">Postcard</a>
+        <a href="about.html" data-i18n="nav-about">About</a>
+        <a href="contact.html" data-i18n="nav-contact">Contact</a>
+        <a href="privacy.html" data-i18n="nav-privacy">Privacy</a>
         <a href="https://getgems.io/collection/EQDzvSAKspPnYIhuqZe0_dMfrEEUlwKVzb4dJo0sRoxZwRZe" target="_blank" rel="noopener noreferrer">Getgems</a>
         <a href="https://t.me/WayofDHD" target="_blank" rel="noopener noreferrer">Telegram</a>
       </div>
@@ -181,7 +199,7 @@
     </div>
   </footer>
 
-  <script src="js/i18n.js?v=20260919-5"></script>
-  <script src="js/main.js"></script>
+  <script src="js/i18n.js?v=20260919-5" defer></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>

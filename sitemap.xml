@@ -92,4 +92,34 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/game.html?lang=ru"/>
   </url>
 
+  <url>
+    <loc>https://thewayofdhd.github.io/about.html</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/about.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/about.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/about.html?lang=ru"/>
+  </url>
+
+  <url>
+    <loc>https://thewayofdhd.github.io/contact.html</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/contact.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/contact.html?lang=ru"/>
+  </url>
+
+  <url>
+    <loc>https://thewayofdhd.github.io/privacy.html</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thewayofdhd.github.io/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thewayofdhd.github.io/privacy.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://thewayofdhd.github.io/privacy.html?lang=ru"/>
+  </url>
+
 </urlset>
