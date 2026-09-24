@@ -7,7 +7,7 @@
   'use strict';
 
   var IMAGE_URL = 'assets/dickpaper.jpg';
-  var FULL_URL = 'assets/dickpaper.png';
+  var FULL_URL = 'assets/dickpaper-full.webp';
   var MIN_SCALE = 0.5;
   var MAX_SCALE = 8;
   // How many times past native 1:1 the user may zoom: the tiniest inscriptions
@@ -137,7 +137,7 @@
     upgradeToFull();
   }
 
-  // --- Full-resolution upgrade: 8000x8000 PNG behind the fast JPEG layer ---
+  // --- Full-resolution upgrade: 8000x8000 WebP behind the fast JPEG layer ---
   var upgraded = false;
 
   function upgradeToFull() {

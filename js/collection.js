@@ -63,9 +63,8 @@
   }
 
   function getImageUrl(item) {
-    // The Diamond item (Dickpaper) is a ~21 MB source: TON API previews and
-    // IPFS gateways fail or stall on it (HTTP 422 / gateway timeout), so we
-    // serve a cached local copy instead.
+    // The Diamond item (Dickpaper): TON API previews and IPFS gateways fail
+    // or stall on the full-resolution source, so we serve a local JPEG.
     if (getType(item) === 'Diamond') return 'assets/dickpaper.jpg';
     var previews = item.previews || [];
     if (previews.length) return previews[previews.length - 1].url || '';
