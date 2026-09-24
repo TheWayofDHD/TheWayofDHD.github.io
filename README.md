@@ -48,7 +48,7 @@ The page itself additionally refreshes supply and owner counters live from `http
 - GEO content pattern: answer-first paragraphs, concrete statistics (1000/21/1 items, 97.85/2.05/0.10%, 658 owners, 249 listings, floor 1 TON), citations to TON API / Getgems / Tonviewer, and a Sources block.
 - `robots.txt` explicitly allows GPTBot, OAI-SearchBot, PerplexityBot, ClaudeBot, anthropic-ai, Google-Extended, Bingbot, Applebot-Extended, CCBot.
 - `llms.txt` at the site root for AI discovery; `meta robots` allows snippets (no `max-snippet:-1`).
-- All images have descriptive `alt` text; the Dickpaper image is served with a blurred inline preview plus a real progress indicator. Full resolution is `assets/dickpaper-full.webp` (~1.9 MB WebP 8000×8000) instead of the old 21 MB PNG.
+- All images have descriptive `alt` text; the Dickpaper image is served with a blurred inline preview plus a real progress indicator. Full resolution is the original lossless `assets/dickpaper.png` (8000×8000, ~21.7 MB) so deep zoom stays sharp.
 - Accessibility: skip-link, `<main id="main">` landmark, labeled controls, heading hierarchy H1→H2→H3.
 
 ## Internationalisation
