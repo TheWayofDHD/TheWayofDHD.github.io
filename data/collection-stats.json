@@ -4,7 +4,7 @@
   "scannedItems": 1022,
   "complete": true,
   "totalSupply": 1022,
-  "ownersOnChain": 658,
+  "ownersOnChain": 657,
   "listedCount": 249,
   "floorPrice": 1.0,
   "floorCurrency": "TON",
@@ -40,8 +40,8 @@
   },
   "cheapestListings": [
     {
-      "index": 972,
-      "name": "DHD #972",
+      "index": 142,
+      "name": "DHD #142",
       "type": "Epic",
       "price": 1.0,
       "market": "Getgems Sales"
@@ -110,6 +110,6 @@
       "market": "Getgems Sales"
     }
   ],
-  "generatedAt": "2026-09-18T15:30:29Z",
+  "generatedAt": "2026-10-31T20:12:41Z",
   "source": "tonapi.io/v2 items with sale field (floor = min listed price)"
 }
