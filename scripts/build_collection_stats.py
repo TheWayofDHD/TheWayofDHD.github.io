@@ -53,10 +53,17 @@ def fetch_page(offset: int) -> dict:
     req = urllib.request.Request(
         url, headers={"Accept": "application/json", "User-Agent": "dhd-site-stats/1.0"}
     )
-    with urllib.request.urlopen(req, timeout=25) as resp:
-        data = json.loads(resp.read().decode("utf-8"))
-    cached.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
-    return data
+    last_exc: Exception | None = None
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+            cached.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            return data
+        except (urllib.error.URLError, TimeoutError) as exc:
+            last_exc = exc
+            time.sleep(2 * (attempt + 1))
+    raise last_exc  # type: ignore[misc]
 
 
 def price_to_ton(sale):
@@ -77,6 +84,10 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--all", action="store_true", help="не останавливаться по времени")
     ap.add_argument("--budget", type=float, default=20.0, help="бюджет сети, сек")
+    ap.add_argument(
+        "--require-complete", action="store_true",
+        help="ошибка и отказ от записи, если скан неполный (для автосборки)",
+    )
     args = ap.parse_args()
 
     offsets = list(range(0, TOTAL, LIMIT))
@@ -105,6 +116,14 @@ def main() -> int:
 
     if not items:
         print("no cached items, nothing to write", file=sys.stderr)
+        return 1
+
+    if args.require_complete and len(items) < TOTAL:
+        print(
+            f"ERROR: incomplete scan ({len(items)}/{TOTAL}) — the snapshot would be "
+            "misleading; keeping the previous one. Re-run with a working network.",
+            file=sys.stderr,
+        )
         return 1
 
     types, listings, markets, owners = {}, [], {}, set()
